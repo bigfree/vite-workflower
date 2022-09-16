@@ -1,6 +1,7 @@
 import create from "zustand";
 import {devtools, persist} from "zustand/middleware";
 import {createSelectorHooks, ZustandHookSelectors} from "auto-zustand-selectors-hook";
+import {storage} from "./helpers/createStorage";
 
 export type NameEntityId = string;
 
@@ -15,34 +16,29 @@ type NameState = {
     getNames: () => NameEntity[];
 }
 
-// const indexedDBStore: LocalForage = localForage.createInstance({
-//     name: 'vite-workflower',
-//     version: 1,
-// })
-
 const middlewares = (f) => devtools(
-persist(f, {
-        name: 'nameStore',
-        version: 1,
-        getStorage: () => localStorage,
-        serialize: (data) => {
-            return JSON.stringify({
-                ...data,
-                state: {
-                    ...data.state,
-                    names: Array.from(data.state.names as Map<NameEntityId, NameEntity>),
-                },
-            });
-        },
-        deserialize: (value) => {
-            const data = JSON.parse(value);
-            data.state.names = new Map(data.state.names);
-            return data;
+    persist(f, {
+            name: 'nameStore',
+            version: 1,
+            getStorage: () => storage,
+            serialize: (data) => {
+                return JSON.stringify({
+                    ...data,
+                    state: {
+                        ...data.state,
+                        names: Array.from(data.state.names as Map<NameEntityId, NameEntity>),
+                    },
+                });
+            },
+            deserialize: (value) => {
+                const data = JSON.parse(value);
+                data.state.names = new Map(data.state.names);
+                return data;
+            }
         }
-    }
-), {
-    serialize: true
-});
+    ), {
+        serialize: true
+    });
 
 const useNameStore = create<NameState>()(
     middlewares((set, get): NameState => ({
