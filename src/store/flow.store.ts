@@ -38,6 +38,7 @@ const useFlowStore = create<FlowStoreState>((set, get) => ({
         }))
     },
     onNodesAddChange: (nodes: NodeEntity[]) => {
+        // @TODO
         console.log(nodes);
         nodes.map((node: NodeEntity) => ({
             [node.id]: node
