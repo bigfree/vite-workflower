@@ -1,12 +1,13 @@
-import {FC} from 'react'
-import TestComponent from "./playground/Test.component";
+import {FC, Fragment} from 'react'
+import FlowComponent from "./components/flow.component";
+import 'reactflow/dist/base.css';
 
 const App: FC = (): JSX.Element => {
 
     return (
-        <div>
-            <TestComponent/>
-        </div>
+        <Fragment>
+            <FlowComponent/>
+        </Fragment>
     )
 };
 
