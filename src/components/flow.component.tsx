@@ -1,17 +1,27 @@
 import {nanoid} from "nanoid";
 import {FC, useCallback, DragEvent, useRef} from "react";
+import {useDrop} from "react-dnd";
 import {Background, BackgroundVariant, ReactFlow, useReactFlow, XYPosition} from "reactflow";
 import useFlowStore from "../store/flow.store";
+import {ItemTypes} from "../types/item.types";
 
 /**
  * Flow component
  * @constructor
  */
 const FlowComponent: FC = (): JSX.Element => {
-    const reactFlowWrapper = useRef<HTMLDivElement>(null);
-    const reactFlowInstance = useReactFlow();
+    // const reactFlowWrapper = useRef<HTMLDivElement>(null);
+    // const reactFlowInstance = useReactFlow();
     const {getAllEdges, getAllNodes, addSingleNode, onNodesChange, onEdgesChange, onConnect} = useFlowStore();
     const {clearStorage} = useFlowStore.persist;
+    const [{ canDrop, isOver }, drop] = useDrop(() => ({
+        accept: ItemTypes.NODE,
+        drop: () => ({ name: 'flow' }),
+        collect: (monitor) => ({
+            isOver: monitor.isOver(),
+            canDrop: monitor.canDrop(),
+        }),
+    }));
 
     const onClickAddNode = useCallback(() => {
         addSingleNode({
@@ -27,43 +37,43 @@ const FlowComponent: FC = (): JSX.Element => {
         });
     }, [getAllNodes]);
 
-    const onDragOver = useCallback((event: DragEvent<HTMLDivElement>) => {
-        event.preventDefault();
-        event.dataTransfer.dropEffect = 'move';
-    }, []);
-
-    // @TODO
-    const onDrop = useCallback((event: DragEvent<HTMLDivElement>) => {
-        event.preventDefault();
-
-        if (null === reactFlowWrapper.current) {
-            return;
-        }
-
-        const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-        const type: string = event.dataTransfer.getData('application/reactflow');
-        console.log(reactFlowBounds, type);
-
-        if (typeof type === 'undefined' || !type) {
-            return;
-        }
-
-        const position: XYPosition = reactFlowInstance.project({
-            x: event.clientX - reactFlowBounds.left,
-            y: event.clientY - reactFlowBounds.top,
-        });
-
-        addSingleNode({
-            id: nanoid(),
-            type,
-            position,
-            data: {
-                nodeDataProp: 'testData',
-                label: 'test DND'
-            }
-        });
-
-    }, [reactFlowInstance]);
+    // const onDragOver = useCallback((event: DragEvent<HTMLDivElement>) => {
+    //     event.preventDefault();
+    //     event.dataTransfer.dropEffect = 'move';
+    // }, []);
+    //
+    // // @TODO
+    // const onDrop = useCallback((event: DragEvent<HTMLDivElement>) => {
+    //     event.preventDefault();
+    //
+    //     if (null === reactFlowWrapper.current) {
+    //         return;
+    //     }
+    //
+    //     const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+    //     const type: string = event.dataTransfer.getData('application/reactflow');
+    //     console.log(reactFlowBounds, type);
+    //
+    //     if (typeof type === 'undefined' || !type) {
+    //         return;
+    //     }
+    //
+    //     const position: XYPosition = reactFlowInstance.project({
+    //         x: event.clientX - reactFlowBounds.left,
+    //         y: event.clientY - reactFlowBounds.top,
+    //     });
+    //
+    //     addSingleNode({
+    //         id: nanoid(),
+    //         type,
+    //         position,
+    //         data: {
+    //             nodeDataProp: 'testData',
+    //             label: 'test DND'
+    //         }
+    //     });
+    //
+    // }, [reactFlowInstance]);
 
     return (
         <div style={{width: '100%', minHeight: '100vh', position: 'relative'}}>
@@ -71,15 +81,16 @@ const FlowComponent: FC = (): JSX.Element => {
                 <button onClick={onClickAddNode}>Add node</button>
                 <button onClick={clearStorage}>Clear store</button>
             </div>
-            <div style={{width: '100%', height: '100vh'}} ref={reactFlowWrapper}>
+            <div style={{width: '100%', height: '100vh'}}>
                 <ReactFlow
+                    ref={drop}
                     nodes={getAllNodes()}
                     edges={getAllEdges()}
                     onNodesChange={onNodesChange}
                     onEdgesChange={onEdgesChange}
                     onConnect={onConnect}
-                    onDrop={onDrop}
-                    onDragOver={onDragOver}
+                    // onDrop={onDrop}
+                    // onDragOver={onDragOver}
                     snapToGrid={true}
                     snapGrid={[5, 5]}
                     minZoom={1}
