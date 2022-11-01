@@ -1,36 +1,46 @@
 import {nanoid} from "nanoid";
 import {FC} from "react";
 import {useDrag} from "react-dnd";
-import useFlowStore from "../store/flow.store";
 import {ItemTypes} from "../types/item.types";
 
-type DropResult = {
+export type DropResult = {
     name: string;
+    dropEffect: string;
 }
 
 const NodeComponent: FC = (): JSX.Element => {
-    const {addSingleNode} = useFlowStore();
     const [{isDragging}, drag] = useDrag(() => ({
         type: ItemTypes.NODE,
-        item: {name: 'node'},
-        end: (item, monitor) => {
-            const dropResult: DropResult | null = monitor.getDropResult<DropResult>();
-            const coord = monitor.getSourceClientOffset();
-            if (item && dropResult) {
-                console.log(coord)
-                addSingleNode({
-                    id: nanoid(),
-                    position: {
-                        x: coord?.x ?? 0,
-                        y: coord?.y ?? 0,
-                    },
-                    data: {
-                        nodeDataProp: 'testData',
-                        label: 'test DND'
-                    }
-                });
+        item: {
+            id: nanoid(),
+            data: {
+                nodeDataProp: 'testData',
+                label: 'test DND'
             }
         },
+        // end: (item, monitor) => {
+        //     // const dropResult: DropResult | null = monitor.getDropResult<DropResult>();
+        //     // if (item && dropResult) {
+        //     //     console.log('drop', item);
+        //     // }
+        //     // const dropResult: NodeEntity | null = monitor.getDropResult<NodeEntity>();
+        //     // const coord = monitor.getSourceClientOffset();
+        //     // console.log(monitor)
+        //     // if (item && dropResult) {
+        //     //     // console.log(coord)
+        //     //     addSingleNode({
+        //     //         id: nanoid(),
+        //     //         position: {
+        //     //             x: coord?.x ?? 0,
+        //     //             y: coord?.y ?? 0,
+        //     //         },
+        //     //         data: {
+        //     //             nodeDataProp: 'testData',
+        //     //             label: 'test DND'
+        //     //         }
+        //     //     });
+        //     // }
+        // },
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
             handlerId: monitor.getHandlerId,

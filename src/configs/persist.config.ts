@@ -15,12 +15,11 @@ export const persistConfig: PersistOptions<FlowStoreState> = {
     },
     deserialize: (value) => {
         const data = JSON.parse(value);
-        data.state.nodes = new Map(data.state.nodes);
-        data.state.edges = new Map(data.state.edges);
+        data.state.nodes = new Map<string, NodeEntity>(data.state.nodes);
+        data.state.edges = new Map<string, EdgeEntity>(data.state.edges);
         return data;
     },
     onRehydrateStorage: () => (state) => {
-        console.log(state);
         state?.setHasHydrated(true);
     }
 }

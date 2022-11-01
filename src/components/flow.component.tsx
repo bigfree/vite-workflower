@@ -1,8 +1,8 @@
 import {nanoid} from "nanoid";
-import {FC, useCallback, DragEvent, useRef} from "react";
-import {useDrop} from "react-dnd";
+import {FC, useCallback, useRef} from "react";
+import {useDrop, XYCoord} from "react-dnd";
 import {Background, BackgroundVariant, ReactFlow, useReactFlow, XYPosition} from "reactflow";
-import useFlowStore from "../store/flow.store";
+import useFlowStore, {NodeEntity} from "../store/flow.store";
 import {ItemTypes} from "../types/item.types";
 
 /**
@@ -10,13 +10,37 @@ import {ItemTypes} from "../types/item.types";
  * @constructor
  */
 const FlowComponent: FC = (): JSX.Element => {
-    // const reactFlowWrapper = useRef<HTMLDivElement>(null);
-    // const reactFlowInstance = useReactFlow();
+    const reactFlowWrapper = useRef<HTMLDivElement>(null);
+    const reactFlowInstance = useReactFlow();
     const {getAllEdges, getAllNodes, addSingleNode, onNodesChange, onEdgesChange, onConnect} = useFlowStore();
     const {clearStorage} = useFlowStore.persist;
-    const [{ canDrop, isOver }, drop] = useDrop(() => ({
+    const [{canDrop, isOver}, drop] = useDrop(() => ({
         accept: ItemTypes.NODE,
-        drop: () => ({ name: 'flow' }),
+        drop: (item: NodeEntity, monitor) => {
+            if (!monitor.canDrop() || null === reactFlowWrapper.current) {
+                return;
+            }
+
+            const reactFlowBounds: DOMRect = reactFlowWrapper.current.getBoundingClientRect();
+            const position: XYCoord | null = monitor.getSourceClientOffset();
+            const flowPosition: XYPosition = reactFlowInstance.project({
+                x: (position?.x ?? 0) - reactFlowBounds.left,
+                y: (position?.y ?? 0) - reactFlowBounds.top,
+            });
+
+            //@TODO reactFlowInstance/reactFlowBounds sa podla vsetkeho nerefreshuje..
+            console.log(reactFlowBounds, position, flowPosition)
+
+            addSingleNode({
+                ...item,
+                id: nanoid(),
+                position: flowPosition
+            });
+
+            return {
+                name: 'flow'
+            }
+        },
         collect: (monitor) => ({
             isOver: monitor.isOver(),
             canDrop: monitor.canDrop(),
@@ -81,7 +105,7 @@ const FlowComponent: FC = (): JSX.Element => {
                 <button onClick={onClickAddNode}>Add node</button>
                 <button onClick={clearStorage}>Clear store</button>
             </div>
-            <div style={{width: '100%', height: '100vh'}}>
+            <div style={{width: '100%', height: '100vh'}} ref={reactFlowWrapper}>
                 <ReactFlow
                     ref={drop}
                     nodes={getAllNodes()}
