@@ -1,46 +1,29 @@
 import {nanoid} from "nanoid";
 import {FC} from "react";
 import {useDrag} from "react-dnd";
-import {ItemTypes} from "../types/item.types";
+import {NodeEntity} from "../store/flow.store";
+import {DropResult, ItemTypes} from "../types/item.types";
 
-export type DropResult = {
-    name: string;
-    dropEffect: string;
-}
+// export type DropResult = {
+//     name: string;
+//     dropEffect: string;
+// }
 
 const NodeComponent: FC = (): JSX.Element => {
-    const [{isDragging}, drag] = useDrag(() => ({
+    const [{isDragging}, drag] = useDrag<NodeEntity, DropResult, { isDragging: boolean }>(() => ({
         type: ItemTypes.NODE,
         item: {
             id: nanoid(),
+            type: 'customNode',
+            position: {
+                x: 0,
+                y: 0
+            },
             data: {
                 nodeDataProp: 'testData',
                 label: 'test DND'
             }
         },
-        // end: (item, monitor) => {
-        //     // const dropResult: DropResult | null = monitor.getDropResult<DropResult>();
-        //     // if (item && dropResult) {
-        //     //     console.log('drop', item);
-        //     // }
-        //     // const dropResult: NodeEntity | null = monitor.getDropResult<NodeEntity>();
-        //     // const coord = monitor.getSourceClientOffset();
-        //     // console.log(monitor)
-        //     // if (item && dropResult) {
-        //     //     // console.log(coord)
-        //     //     addSingleNode({
-        //     //         id: nanoid(),
-        //     //         position: {
-        //     //             x: coord?.x ?? 0,
-        //     //             y: coord?.y ?? 0,
-        //     //         },
-        //     //         data: {
-        //     //             nodeDataProp: 'testData',
-        //     //             label: 'test DND'
-        //     //         }
-        //     //     });
-        //     // }
-        // },
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
             handlerId: monitor.getHandlerId,

@@ -18,12 +18,12 @@ import {persistConfig} from "../configs/persist.config";
 
 enableMapSet();
 
-type NodeData = {
+export type NodeData = {
     label: string;
     nodeDataProp?: string;
 }
 
-type EdgeData = {
+export type EdgeData = {
     edgeDataProp?: string;
 }
 
@@ -77,6 +77,7 @@ const useFlowStore = create<FlowStoreState>()(persist((set, get) => ({
     },
     onConnect: (connection: Connection) => {
         set(produce((draft: FlowStoreState) => {
+            console.log(connection)
             const edges: EdgeEntity[] = addEdge(connection, get().getAllEdges());
             edges.forEach((edge: EdgeEntity) => draft.edges.set(edge.id, edge));
         }));
