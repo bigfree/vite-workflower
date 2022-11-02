@@ -11,7 +11,7 @@ import {ItemTypes} from "../types/item.types";
  */
 const FlowComponent: FC = (): JSX.Element => {
     const reactFlowWrapper = useRef<HTMLDivElement>(null);
-    const reactFlowInstance = useReactFlow();
+    const {project} = useReactFlow();
     const {getAllEdges, getAllNodes, addSingleNode, onNodesChange, onEdgesChange, onConnect} = useFlowStore();
     const {clearStorage} = useFlowStore.persist;
     const [{canDrop, isOver}, drop] = useDrop(() => ({
@@ -23,13 +23,10 @@ const FlowComponent: FC = (): JSX.Element => {
 
             const reactFlowBounds: DOMRect = reactFlowWrapper.current.getBoundingClientRect();
             const position: XYCoord | null = monitor.getSourceClientOffset();
-            const flowPosition: XYPosition = reactFlowInstance.project({
+            const flowPosition: XYPosition = project({
                 x: (position?.x ?? 0) - reactFlowBounds.left,
                 y: (position?.y ?? 0) - reactFlowBounds.top,
             });
-
-            //@TODO reactFlowInstance/reactFlowBounds sa podla vsetkeho nerefreshuje..
-            console.log(reactFlowBounds, position, flowPosition)
 
             addSingleNode({
                 ...item,
@@ -45,7 +42,7 @@ const FlowComponent: FC = (): JSX.Element => {
             isOver: monitor.isOver(),
             canDrop: monitor.canDrop(),
         }),
-    }));
+    }), [project]);
 
     const onClickAddNode = useCallback(() => {
         addSingleNode({
