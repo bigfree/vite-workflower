@@ -14,7 +14,7 @@ import {
 } from "reactflow";
 import create from "zustand";
 import {persist} from "zustand/middleware";
-import {persistConfig} from "../configs/persist.config";
+import {flowStorePersistConfig} from "../configs/persist.config";
 
 enableMapSet();
 
@@ -94,6 +94,6 @@ const useFlowStore = create<FlowStoreState>()(persist((set, get) => ({
             draft._hasHydrated = state;
         }));
     }
-}), persistConfig));
+}), flowStorePersistConfig));
 
 export default useFlowStore;

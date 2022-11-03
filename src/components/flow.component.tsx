@@ -1,22 +1,24 @@
 import {NodeTypes} from "@reactflow/core/dist/esm/types";
 import {DefaultEdgeOptions} from "@reactflow/core/dist/esm/types/edges";
 import {nanoid} from "nanoid";
-import {CSSProperties, FC, useCallback, useRef} from "react";
+import {CSSProperties, FC, useMemo, useRef} from "react";
 import {useDrop, XYCoord} from "react-dnd";
 import {Background, BackgroundVariant, EdgeTypes, MarkerType, ReactFlow, useReactFlow, XYPosition} from "reactflow";
+import useAppStore from "../store/app.store";
 import useFlowStore, {NodeEntity} from "../store/flow.store";
 import {ItemTypes} from "../types/item.types";
 import CustomEdgeComponent from "./custom/customEdge.component";
 import CustomLineComponent from "./custom/customLine.component";
 import CustomNodeComponent from "./custom/customNode.component";
+import ActionsComponent from "./flow/actions.component";
 
-const nodeTypes: NodeTypes = {
-    customNode: CustomNodeComponent
-}
+// const nodeTypes: NodeTypes = {
+//     customNode: CustomNodeComponent
+// }
 
-const edgeTypes: EdgeTypes = {
-    floating: CustomEdgeComponent,
-};
+// const edgeTypes: EdgeTypes = {
+//     floating: CustomEdgeComponent,
+// };
 
 const defaultEdgeOptions: DefaultEdgeOptions = {
     style: {strokeWidth: 1, stroke: 'black'},
@@ -37,10 +39,14 @@ const connectionLineStyle: CSSProperties = {
  * @constructor
  */
 const FlowComponent: FC = (): JSX.Element => {
+    const {getAllEdges, getAllNodes, addSingleNode, onNodesChange, onEdgesChange, onConnect} = useFlowStore();
+
     const reactFlowWrapper = useRef<HTMLDivElement>(null);
     const {project} = useReactFlow();
-    const {getAllEdges, getAllNodes, addSingleNode, onNodesChange, onEdgesChange, onConnect} = useFlowStore();
-    const {clearStorage} = useFlowStore.persist;
+
+    const nodeTypes: NodeTypes = useMemo(() => ({ customNode: CustomNodeComponent }), []);
+    const edgeTypes: EdgeTypes = useMemo(() => ({ floating: CustomEdgeComponent }), []);
+
     const [, drop] = useDrop(() => ({
         accept: ItemTypes.NODE,
         drop: (item: NodeEntity, monitor) => {
@@ -65,33 +71,12 @@ const FlowComponent: FC = (): JSX.Element => {
                 name: 'flow'
             }
         },
-        // collect: (monitor) => ({
-        //     isOver: monitor.isOver(),
-        //     canDrop: monitor.canDrop(),
-        // }),
     }), [project]);
-
-    const onClickAddNode = useCallback(() => {
-        addSingleNode({
-            id: nanoid(),
-            position: {
-                x: 100,
-                y: 200
-            },
-            data: {
-                nodeDataProp: 'testData',
-                label: 'test'
-            }
-        });
-    }, [getAllNodes]);
 
     return (
         <div style={{width: '100%', minHeight: '100vh', position: 'relative'}}>
-            <div style={{position: 'absolute', top: 0, left: 0, width: '100%', zIndex: 99999}}>
-                <button onClick={onClickAddNode}>Add node</button>
-                <button onClick={clearStorage}>Clear store</button>
-            </div>
             <div style={{width: '100%', height: '100vh'}} ref={reactFlowWrapper}>
+                <ActionsComponent/>
                 <ReactFlow
                     ref={drop}
                     nodes={getAllNodes()}
@@ -101,8 +86,6 @@ const FlowComponent: FC = (): JSX.Element => {
                     onConnect={onConnect}
                     snapToGrid={true}
                     snapGrid={[5, 5]}
-                    minZoom={1}
-                    maxZoom={1}
                     nodeTypes={nodeTypes}
                     edgeTypes={edgeTypes}
                     defaultEdgeOptions={defaultEdgeOptions}
@@ -118,7 +101,7 @@ const FlowComponent: FC = (): JSX.Element => {
                     />
                 </ReactFlow>
             </div>
-            <div style={{position: 'absolute', bottom: 0, left: 0, width: '100%'}}>{JSON.stringify(getAllNodes())}</div>
+            {/*<div style={{position: 'absolute', bottom: 0, left: 0, width: '100%'}}>{JSON.stringify(getAllNodes())}</div>*/}
         </div>
     )
 }

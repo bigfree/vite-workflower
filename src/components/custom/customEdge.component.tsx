@@ -1,5 +1,5 @@
 import {FC, Fragment, useCallback} from "react";
-import {EdgeProps, getStraightPath, useStore} from "reactflow";
+import {EdgeLabelRenderer, EdgeProps, getStraightPath, useStore} from "reactflow";
 import {EdgeData, NodeEntity} from "../../store/flow.store";
 import {getEdgeParams} from "../../utils";
 
@@ -42,17 +42,23 @@ const CustomEdgeComponent: FC<EdgeProps<EdgeData>> = ({id, source, target, marke
                 markerEnd={markerEnd}
                 style={style}
             />
-            <foreignObject
-                width={30}
-                height={30}
-                x={labelX - 30 / 2}
-                y={labelY - 30 / 2}
-                requiredExtensions="http://www.w3.org/1999/xhtml"
-            >
-                <button>
-                    ×
-                </button>
-            </foreignObject>
+
+            <EdgeLabelRenderer>
+                    <button style={{
+                        position: 'absolute',
+                        transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+                        width: '20px',
+                        height: '20px',
+                        background: '#ffffff',
+                        borderRadius: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: 12,
+                        border: '1px solid #ededed',
+                        zIndex: 99
+                    }}>X</button>
+            </EdgeLabelRenderer>
         </Fragment>
     );
 }

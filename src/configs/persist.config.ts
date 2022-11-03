@@ -1,7 +1,8 @@
 import {PersistOptions} from "zustand/middleware";
+import {AppStoreState} from "../store/app.store";
 import {EdgeEntity, FlowStoreState, NodeEntity} from "../store/flow.store";
 
-export const persistConfig: PersistOptions<FlowStoreState> = {
+export const flowStorePersistConfig: PersistOptions<FlowStoreState> = {
     name: 'flowStore',
     serialize: (data) => {
         return JSON.stringify({
@@ -22,4 +23,8 @@ export const persistConfig: PersistOptions<FlowStoreState> = {
     onRehydrateStorage: () => (state) => {
         state?.setHasHydrated(true);
     }
+}
+
+export const appStorePersisConfig: PersistOptions<AppStoreState> = {
+    name: 'appStore',
 }

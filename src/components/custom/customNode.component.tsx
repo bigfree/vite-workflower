@@ -1,5 +1,6 @@
 import {CSSProperties, FC, Fragment} from "react";
 import {Handle, NodeProps, Position, useStore} from "reactflow";
+import useAppStore from "../../store/app.store";
 import {NodeData} from "../../store/flow.store";
 
 const targetHandle: CSSProperties = {
@@ -23,17 +24,17 @@ const connectionNodeIdSelector = (state: { connectionNodeId: any; }) => state.co
  * @constructor
  */
 const CustomNodeComponent: FC<NodeProps<NodeData>> = (node): JSX.Element => {
+    const {edgeMode} = useAppStore();
     const connectionNodeId = useStore(connectionNodeIdSelector);
     const isTarget = connectionNodeId && connectionNodeId !== node.id;
 
-    const targetHandleStyle = {zIndex: isTarget ? 3 : 1};
+    const targetHandleStyle1 = {zIndex: edgeMode ? 2 : -1};
+    const targetHandleStyle2 = {zIndex: edgeMode && isTarget ? 3 : -1};
 
     return (
         <Fragment>
             <div style={{
-                paddingLeft: '15px',
                 border: '1px solid black',
-                backgroundColor: '#000',
             }}>
                 <div
                     style={{
@@ -49,17 +50,19 @@ const CustomNodeComponent: FC<NodeProps<NodeData>> = (node): JSX.Element => {
                 >
                     <Handle
                         className="targetHandle"
-                        style={{...targetHandle, zIndex: 2}}
+                        style={{...targetHandle, ...targetHandleStyle1}}
                         position={Position.Right}
                         type="source"
                     />
                     <Handle
                         className="targetHandle"
                         position={Position.Left}
-                        style={{...targetHandle, ...targetHandleStyle}}
+                        style={{...targetHandle, ...targetHandleStyle2}}
                         type="target"
                     />
-                    {node.data.label}
+                    <div style={{zIndex: 1}}>
+                        {node.data.label}
+                    </div>
                 </div>
             </div>
         </Fragment>
