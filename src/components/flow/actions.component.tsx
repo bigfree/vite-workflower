@@ -3,6 +3,7 @@ import CenterFocusStrongOutlinedIcon from '@mui/icons-material/CenterFocusStrong
 import EditOffOutlinedIcon from '@mui/icons-material/EditOffOutlined';
 import ModeOutlinedIcon from '@mui/icons-material/ModeOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
+import LayersClearOutlinedIcon from '@mui/icons-material/LayersClearOutlined';
 import {Box, Divider, IconButton, Stack} from "@mui/joy";
 import {FC, Fragment} from "react";
 import {useReactFlow} from "reactflow";
@@ -26,12 +27,11 @@ const ActionsComponent: FC = (): JSX.Element => {
                 left: 0,
                 mb: 1.5,
                 ml: 1.5,
-                py: 1.2,
-                px: 1.2,
+                padding: 1.2,
                 backgroundColor: 'rgba(255,255,255,0.7)',
                 borderRadius: 8,
                 border: 1,
-                borderColor: '#E7EBF0',
+                borderColor: 'neutral.50',
                 zIndex: 999,
                 backdropFilter: 'blur(20px)',
             }}>
@@ -96,8 +96,22 @@ const ActionsComponent: FC = (): JSX.Element => {
                     >
                         <CenterFocusStrongOutlinedIcon/>
                     </IconButton>
+                    <Divider orientation={'vertical'}/>
+                    <IconButton
+                        title="Clear store"
+                        color={'blue'}
+                        sx={{
+                            border: 1,
+                            borderColor: '#E7EBF0',
+                            backgroundColor: 'rgba(255,255,255,.7)',
+                            borderRadius: 8,
+                            color: 'blue.500',
+                        }}
+                        onClick={clearStorage}
+                    >
+                        <LayersClearOutlinedIcon/>
+                    </IconButton>
                 </Stack>
-                {/*<button onClick={clearStorage}>Clear store</button>*/}
             </Box>
         </Fragment>
     )

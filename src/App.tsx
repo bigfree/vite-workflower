@@ -13,6 +13,7 @@ const App: FC = (): JSX.Element => {
             <div style={{
                 display: 'flex',
                 flexFlow: 'row',
+                position: 'relative',
             }}>
                 <FlowComponent/>
                 <ActionsComponent/>

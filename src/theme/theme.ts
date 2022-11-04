@@ -4,13 +4,19 @@ import { extendTheme, PaletteRange, Theme } from "@mui/joy";
 declare module '@mui/joy/styles' {
     interface Palette {
         purple: {
-            primary: PaletteRange | undefined;
+            primary: Partial<PaletteRange> | undefined;
         };
     }
 }
 declare module '@mui/joy/styles' {
     interface Palette {
-        blue: PaletteRange | undefined
+        blue: Partial<PaletteRange> | undefined
+    }
+}
+
+declare module '@mui/joy/IconButton' {
+    interface IconButtonPropsVariantOverrides  {
+        aside: true;
     }
 }
 
@@ -47,10 +53,31 @@ export const appTheme: Theme = extendTheme({
                     900: '#030E18',
                     plainHoverBg: 'rgba(232, 244, 253, .5)',
                     solidHoverBg: 'rgba(232, 244, 253, .5)',
-                    softHoverBg: 'rgba(232, 244, 253, .5)'
+                    softHoverBg: 'rgba(232, 244, 253, .5)',
                 },
                 divider: '#efefef',
             },
         }
-    }
-})
+    },
+    components:{
+        JoyIconButton: {
+            styleOverrides: {
+                root: ({ ownerState, theme }) => ({
+                    ...(ownerState.variant === 'aside' && {
+                        borderRadius: 0,
+                        padding: 0,
+                        height: 80,
+                        borderBottom: 1,
+                        borderBottomStyle: 'solid',
+                        borderBottomColor: theme.palette.neutral["100"],
+                        cursor: 'pointer',
+                        flexFlow: 'column',
+                        // '& > *:not(svg)': {
+                        //     fontSize: 4,
+                        // }
+                    }),
+                }),
+            },
+        },
+    },
+});

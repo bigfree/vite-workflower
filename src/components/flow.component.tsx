@@ -1,24 +1,23 @@
-import {NodeTypes} from "@reactflow/core/dist/esm/types";
-import {DefaultEdgeOptions} from "@reactflow/core/dist/esm/types/edges";
 import {nanoid} from "nanoid";
 import {CSSProperties, FC, useMemo, useRef} from "react";
 import {useDrop, XYCoord} from "react-dnd";
-import {Background, BackgroundVariant, EdgeTypes, MarkerType, ReactFlow, useReactFlow, XYPosition} from "reactflow";
-import useAppStore from "../store/app.store";
+import {
+    Background,
+    BackgroundVariant,
+    DefaultEdgeOptions,
+    EdgeTypes,
+    MarkerType,
+    NodeTypes,
+    ReactFlow,
+    useReactFlow,
+    XYPosition
+} from "reactflow";
 import useFlowStore, {NodeEntity} from "../store/flow.store";
 import {ItemTypes} from "../types/item.types";
 import CustomEdgeComponent from "./custom/customEdge.component";
 import CustomLineComponent from "./custom/customLine.component";
 import CustomNodeComponent from "./custom/customNode.component";
 import ActionsComponent from "./flow/actions.component";
-
-// const nodeTypes: NodeTypes = {
-//     customNode: CustomNodeComponent
-// }
-
-// const edgeTypes: EdgeTypes = {
-//     floating: CustomEdgeComponent,
-// };
 
 const defaultEdgeOptions: DefaultEdgeOptions = {
     style: {strokeWidth: 1, stroke: 'black'},
@@ -44,8 +43,8 @@ const FlowComponent: FC = (): JSX.Element => {
     const reactFlowWrapper = useRef<HTMLDivElement>(null);
     const {project} = useReactFlow();
 
-    const nodeTypes: NodeTypes = useMemo(() => ({ customNode: CustomNodeComponent }), []);
-    const edgeTypes: EdgeTypes = useMemo(() => ({ floating: CustomEdgeComponent }), []);
+    const nodeTypes: NodeTypes = useMemo(() => ({customNode: CustomNodeComponent}), []);
+    const edgeTypes: EdgeTypes = useMemo(() => ({floating: CustomEdgeComponent}), []);
 
     const [, drop] = useDrop(() => ({
         accept: ItemTypes.NODE,
