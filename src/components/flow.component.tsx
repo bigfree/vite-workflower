@@ -96,7 +96,7 @@ const FlowComponent: FC = (): JSX.Element => {
                         gap={20}
                         variant={BackgroundVariant.Lines}
                         // style={{backgroundColor: '#232323'}}
-                        // color={'#323232'}
+                        color={'rgba(241,241,241,0.67)'}
                         // lineWidth={0.5}
                     />
                 </ReactFlow>

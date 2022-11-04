@@ -3,7 +3,7 @@ import CenterFocusStrongOutlinedIcon from '@mui/icons-material/CenterFocusStrong
 import EditOffOutlinedIcon from '@mui/icons-material/EditOffOutlined';
 import ModeOutlinedIcon from '@mui/icons-material/ModeOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
-import {Box, Divider, IconButton, Stack} from "@mui/material";
+import {Box, Divider, IconButton, Stack} from "@mui/joy";
 import {FC, Fragment} from "react";
 import {useReactFlow} from "reactflow";
 import useAppStore from "../../store/app.store";
@@ -26,41 +26,43 @@ const ActionsComponent: FC = (): JSX.Element => {
                 left: 0,
                 mb: 1.5,
                 ml: 1.5,
-                py: 1.5,
-                px: 2,
+                py: 1.2,
+                px: 1.2,
                 backgroundColor: 'rgba(255,255,255,0.7)',
-                borderRadius: 3,
+                borderRadius: 8,
                 border: 1,
                 borderColor: '#E7EBF0',
                 zIndex: 999,
                 backdropFilter: 'blur(20px)',
             }}>
                 <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="stretch"
+                    direction={'row'}
                     spacing={1}
                 >
                     <IconButton
                         title={`Turn ${edgeMode ? 'off' : 'on'} edge mode`}
+                        color={'blue'}
                         sx={{
                             border: 1,
                             borderColor: '#E7EBF0',
                             backgroundColor: 'rgba(255,255,255,.7)',
-                            borderRadius: 3
+                            borderRadius: 8,
+                            color: 'blue.500',
                         }}
                         onClick={toggleEdgeMode}
                     >
                         {edgeMode ? <EditOffOutlinedIcon/> : <ModeOutlinedIcon/>}
                     </IconButton>
-                    <Divider orientation={'vertical'} flexItem />
+                    <Divider orientation={'vertical'}/>
                     <IconButton
                         title="Zoom In"
+                        color={'blue'}
                         sx={{
                             border: 1,
                             borderColor: '#E7EBF0',
                             backgroundColor: 'rgba(255,255,255,.7)',
-                            borderRadius: 3
+                            borderRadius: 8,
+                            color: 'blue.500',
                         }}
                         onClick={() => zoomIn({duration: 200})}
                     >
@@ -68,11 +70,13 @@ const ActionsComponent: FC = (): JSX.Element => {
                     </IconButton>
                     <IconButton
                         title="Zoom Out"
+                        color={'blue'}
                         sx={{
                             border: 1,
                             borderColor: '#E7EBF0',
                             backgroundColor: 'rgba(255,255,255,.7)',
-                            borderRadius: 3
+                            borderRadius: 8,
+                            color: 'blue.500',
                         }}
                         onClick={() => zoomOut({duration: 200})}
                     >
@@ -80,11 +84,13 @@ const ActionsComponent: FC = (): JSX.Element => {
                     </IconButton>
                     <IconButton
                         title="Zoom Out"
+                        color={'blue'}
                         sx={{
                             border: 1,
                             borderColor: '#E7EBF0',
                             backgroundColor: 'rgba(255,255,255,.7)',
-                            borderRadius: 3
+                            borderRadius: 8,
+                            color: 'blue.500',
                         }}
                         onClick={() => zoomTo(1, {duration: 200})}
                     >

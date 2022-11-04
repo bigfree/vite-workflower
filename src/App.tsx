@@ -1,4 +1,5 @@
-import {CssBaseline} from "@mui/material";
+import '@fontsource/public-sans';
+import {CssBaseline} from "@mui/joy";
 import {FC, Fragment} from 'react'
 import 'reactflow/dist/base.css';
 import ActionsComponent from "./components/actions.component";
