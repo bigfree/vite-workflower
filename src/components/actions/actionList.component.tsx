@@ -9,7 +9,11 @@ const ActionListComponent: FC = (): JSX.Element => {
         <Fragment>
             <Box
                 sx={{
-                    padding: 2
+                    padding: 2,
+                    flexGrow: 1,
+                    flexShrink: 1,
+                    flexBasis: 'auto',
+                    overflow: 'auto',
                 }}
             >
                 {getAllActions().length ? (

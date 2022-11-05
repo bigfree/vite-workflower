@@ -17,6 +17,8 @@ const App: FC = (): JSX.Element => {
                 display: 'flex',
                 flexFlow: 'row',
                 position: 'relative',
+                alignItems: 'stretch',
+                height: '100vh',
             }}>
                 <FlowComponent/>
                 {openActions ? <ActionAsideComponent/> : ''}
