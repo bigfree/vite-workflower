@@ -1,4 +1,5 @@
 import {PersistOptions} from "zustand/middleware";
+import {ActionEntity, ActionStoreState} from "../store/action.store";
 import {AppStoreState} from "../store/app.store";
 import {EdgeEntity, FlowStoreState, NodeEntity} from "../store/flow.store";
 
@@ -27,4 +28,28 @@ export const flowStorePersistConfig: PersistOptions<FlowStoreState> = {
 
 export const appStorePersisConfig: PersistOptions<AppStoreState> = {
     name: 'appStore',
+}
+
+/**
+ * Action Store Persist config
+ */
+export const actionStorePersisConfig: PersistOptions<ActionStoreState> = {
+    name: 'actionsStore',
+    serialize: (data) => {
+        return JSON.stringify({
+            ...data,
+            state: {
+                ...data.state,
+                nodes: Array.from(data.state.actions as Map<string, ActionEntity>),
+            }
+        });
+    },
+    deserialize: (value) => {
+        const data = JSON.parse(value);
+        data.state.actions = new Map<string, ActionEntity>(data.state.actions);
+        return data;
+    },
+    onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+    }
 }

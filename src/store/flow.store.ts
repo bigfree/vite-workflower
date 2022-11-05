@@ -45,6 +45,9 @@ export type FlowStoreState = {
     setHasHydrated: (state: boolean) => void;
 }
 
+/**
+ * Flow store
+ */
 const useFlowStore = create<FlowStoreState>()(persist((set, get) => ({
     nodes: new Map([]),
     edges: new Map([]),

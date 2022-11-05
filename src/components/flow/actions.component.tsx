@@ -41,13 +41,13 @@ const ActionsComponent: FC = (): JSX.Element => {
                 >
                     <IconButton
                         title={`Turn ${edgeMode ? 'off' : 'on'} edge mode`}
-                        color={'blue'}
+                        color={'neutral'}
                         sx={{
                             border: 1,
                             borderColor: '#E7EBF0',
                             backgroundColor: 'rgba(255,255,255,.7)',
                             borderRadius: 8,
-                            color: 'blue.500',
+                            color: 'neutral.500',
                         }}
                         onClick={toggleEdgeMode}
                     >
@@ -56,13 +56,13 @@ const ActionsComponent: FC = (): JSX.Element => {
                     <Divider orientation={'vertical'}/>
                     <IconButton
                         title="Zoom In"
-                        color={'blue'}
+                        color={'neutral'}
                         sx={{
                             border: 1,
                             borderColor: '#E7EBF0',
                             backgroundColor: 'rgba(255,255,255,.7)',
                             borderRadius: 8,
-                            color: 'blue.500',
+                            color: 'neutral.500',
                         }}
                         onClick={() => zoomIn({duration: 200})}
                     >
@@ -70,13 +70,13 @@ const ActionsComponent: FC = (): JSX.Element => {
                     </IconButton>
                     <IconButton
                         title="Zoom Out"
-                        color={'blue'}
+                        color={'neutral'}
                         sx={{
                             border: 1,
                             borderColor: '#E7EBF0',
                             backgroundColor: 'rgba(255,255,255,.7)',
                             borderRadius: 8,
-                            color: 'blue.500',
+                            color: 'neutral.500',
                         }}
                         onClick={() => zoomOut({duration: 200})}
                     >
@@ -84,13 +84,13 @@ const ActionsComponent: FC = (): JSX.Element => {
                     </IconButton>
                     <IconButton
                         title="Zoom Out"
-                        color={'blue'}
+                        color={'neutral'}
                         sx={{
                             border: 1,
                             borderColor: '#E7EBF0',
                             backgroundColor: 'rgba(255,255,255,.7)',
                             borderRadius: 8,
-                            color: 'blue.500',
+                            color: 'neutral.500',
                         }}
                         onClick={() => zoomTo(1, {duration: 200})}
                     >
@@ -99,13 +99,13 @@ const ActionsComponent: FC = (): JSX.Element => {
                     <Divider orientation={'vertical'}/>
                     <IconButton
                         title="Clear store"
-                        color={'blue'}
+                        color={'neutral'}
                         sx={{
                             border: 1,
                             borderColor: '#E7EBF0',
                             backgroundColor: 'rgba(255,255,255,.7)',
                             borderRadius: 8,
-                            color: 'blue.500',
+                            color: 'neutral.500',
                         }}
                         onClick={clearStorage}
                     >

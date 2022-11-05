@@ -1,16 +1,9 @@
 import { extendTheme, PaletteRange, Theme } from "@mui/joy";
 
-
 declare module '@mui/joy/styles' {
     interface Palette {
-        purple: {
-            primary: Partial<PaletteRange> | undefined;
-        };
-    }
-}
-declare module '@mui/joy/styles' {
-    interface Palette {
-        blue: Partial<PaletteRange> | undefined
+        blue: Partial<PaletteRange> | undefined;
+        purple: Partial<PaletteRange> | undefined;
     }
 }
 
@@ -26,19 +19,17 @@ export const appTheme: Theme = extendTheme({
         light: {
             palette: {
                 purple: {
-                    primary: {
-                        50: '#D8D0F5',
-                        100: '#C4B8F0',
-                        200: '#BAACEE',
-                        300: '#B1A1EB',
-                        400: '#A795E9',
-                        500: '#9D89E6',
-                        600: '#8574C4',
-                        700: '#8574C4',
-                        800: '#4F4573',
-                        900: '#100E17',
-                        softColor: '#9D89E6',
-                    }
+                    50: '#D8D0F5',
+                    100: '#C4B8F0',
+                    200: '#BAACEE',
+                    300: '#B1A1EB',
+                    400: '#A795E9',
+                    500: '#9D89E6',
+                    600: '#8574C4',
+                    700: '#8574C4',
+                    800: '#4F4573',
+                    900: '#100E17',
+                    softColor: '#9D89E6',
                 },
                 blue: {
                     50: '#E8F4FD',

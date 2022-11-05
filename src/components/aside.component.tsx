@@ -2,13 +2,16 @@ import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
 import ElectricBoltOutlinedIcon from '@mui/icons-material/ElectricBoltOutlined';
 import {IconButton, Stack, Typography} from "@mui/joy";
 import {FC, Fragment, memo} from "react";
+import useAppStore from "../store/app.store";
 import NodeComponent from "./node.component";
 
 /**
  * Actions component
  * @constructor
  */
-const ActionsComponent: FC = (): JSX.Element => {
+const AsideComponent: FC = (): JSX.Element => {
+    const {setOpenActions} = useAppStore();
+
     return (
         <Fragment>
             <Stack
@@ -21,12 +24,18 @@ const ActionsComponent: FC = (): JSX.Element => {
                     justifyItems: 'stretch',
                     flexShrink: 0,
                     flexBasis: 81,
+
                 }}>
-                <IconButton variant={'aside'}>
+                <IconButton
+                    variant={'aside'}
+                >
                     <AccountTreeOutlinedIcon sx={{mb:1, width: .4, height: .4}}/>
                     <Typography fontSize={'small'}>Nodes</Typography>
                 </IconButton>
-                <IconButton variant={'aside'}>
+                <IconButton
+                    variant={'aside'}
+                    onClick={() => setOpenActions(true)}
+                >
                     <ElectricBoltOutlinedIcon sx={{mb:1, width: .4, height: .4}}/>
                     <Typography fontSize={'small'}>Actions</Typography>
                 </IconButton>
@@ -36,4 +45,4 @@ const ActionsComponent: FC = (): JSX.Element => {
         </Fragment>
     )
 }
-export default memo(ActionsComponent);
+export default memo(AsideComponent);
