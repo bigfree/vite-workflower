@@ -5,6 +5,7 @@ import 'reactflow/dist/base.css';
 import ActionAsideComponent from "./components/actions/actionAside.component";
 import AsideComponent from "./components/aside.component";
 import FlowComponent from "./components/flow.component";
+import ModalListComponent from "./components/modals/modalList.component";
 import useAppStore from "./store/app.store";
 
 const App: FC = (): JSX.Element => {
@@ -24,6 +25,7 @@ const App: FC = (): JSX.Element => {
                 {openActions ? <ActionAsideComponent/> : ''}
                 <AsideComponent/>
             </div>
+            <ModalListComponent/>
         </Fragment>
     )
 };

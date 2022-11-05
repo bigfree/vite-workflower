@@ -1,8 +1,6 @@
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import {Box, IconButton, Stack, Typography} from "@mui/joy";
-import {NumberSize, Resizable} from "re-resizable";
 import {FC, Fragment} from "react";
-import {ReflexContainer, ReflexElement, ReflexSplitter} from "react-reflex";
 import useActionStore from "../../store/action.store";
 import useAppStore from "../../store/app.store";
 import ActionListComponent from "./actionList.component";
@@ -18,8 +16,6 @@ const ActionAsideComponent: FC = (): JSX.Element => {
     return (
         <Fragment>
             <Box
-                component={ReflexContainer}
-                orientation={'horizontal'}
                 sx={{
                     display: 'flex',
                     flexFlow: 'column',
@@ -30,7 +26,6 @@ const ActionAsideComponent: FC = (): JSX.Element => {
                 }}
             >
                 <Box
-                    component={ReflexElement}
                     sx={{
                         display: 'flex',
                         flexFlow: 'column',
@@ -68,37 +63,6 @@ const ActionAsideComponent: FC = (): JSX.Element => {
                         </IconButton>
                     </Stack>
                     <ActionListComponent/>
-                </Box>
-                <Box
-                    component={ReflexSplitter}
-                    propagate={true}
-                    sx={{
-                        height: 10,
-                        borderTop: 5,
-                        borderTopColor: 'neutral.100',
-                        cursor: 'row-resize'
-                    }}
-                />
-                {/*TODO: spravit controlled size*/}
-                <Box
-                    component={ReflexElement}
-                    // component={Resizable}
-                    // minHeight={'50%'}
-                    // size={newActionStateSizes}
-                    // onResize={(e, direction, ref, delta: NumberSize) => changeNewActionSizes({
-                    //     width: 'auto',
-                    //     height: Number(newActionStateSizes.height) + Number(delta.height)
-                    // })}
-                    sx={{
-                        // borderTop: 1,
-                        // borderTopColor: 'neutral.100',
-                        // flexBasis: 'auto',
-                        // flexShrink: 1,
-                        // flexGrow: 1
-                    }}
-                    // bounds={'parent'}
-                >
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto deserunt dolorum eligendi esse neque obcaecati perferendis porro quasi soluta totam. Autem dignissimos eligendi laboriosam maiores necessitatibus obcaecati odit praesentium quasi.
                 </Box>
             </Box>
         </Fragment>

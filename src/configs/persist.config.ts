@@ -2,6 +2,7 @@ import {PersistOptions} from "zustand/middleware";
 import {ActionEntity, ActionStoreState} from "../store/action.store";
 import {AppStoreState} from "../store/app.store";
 import {EdgeEntity, FlowStoreState, NodeEntity} from "../store/flow.store";
+import {ModalEntity, ModalStoreState, ModalType} from "../store/modal.store";
 
 export const flowStorePersistConfig: PersistOptions<FlowStoreState> = {
     name: 'flowStore',
@@ -47,6 +48,27 @@ export const actionStorePersisConfig: PersistOptions<ActionStoreState> = {
     deserialize: (value) => {
         const data = JSON.parse(value);
         data.state.actions = new Map<string, ActionEntity>(data.state.actions);
+        return data;
+    },
+    onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
+    }
+}
+
+export const modalStorePersisConfig: PersistOptions<ModalStoreState> = {
+    name: 'modalsStore',
+    serialize: (data) => {
+        return JSON.stringify({
+            ...data,
+            state: {
+                ...data.state,
+                modals: Array.from(data.state.modals as Map<string | ModalType, ModalEntity>),
+            }
+        });
+    },
+    deserialize: (value) => {
+        const data = JSON.parse(value);
+        data.state.modals = new Map<string | ModalType, ModalEntity>(data.state.modals);
         return data;
     },
     onRehydrateStorage: () => (state) => {
