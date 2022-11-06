@@ -1,7 +1,6 @@
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import {Box, IconButton, Stack, Typography} from "@mui/joy";
 import {FC, Fragment} from "react";
-import useActionStore from "../../store/action.store";
 import useAppStore from "../../store/app.store";
 import ActionListComponent from "./actionList.component";
 
@@ -11,7 +10,6 @@ import ActionListComponent from "./actionList.component";
  */
 const ActionAsideComponent: FC = (): JSX.Element => {
     const {setOpenActions} = useAppStore();
-    const {newActionStateSizes, changeNewActionSizes, listActionStateSizes, changeListActionSizes} = useActionStore();
 
     return (
         <Fragment>

@@ -1,66 +1,48 @@
-import {Box, Modal, ModalClose} from "@mui/joy";
-import {FC, Fragment, useRef} from "react";
-import Draggable, {DraggableData} from "react-draggable";
-import useModalStore, {ModalEntity, ModalType} from "../../../store/modal.store";
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import {IconButton, Typography} from "@mui/joy";
+import {FC, Fragment} from "react";
+import useModalStore, {ModalEntity} from "../../../store/modal.store";
+import {ModalBodyComponent, ModalComponent, ModalHeaderComponent} from "../modal.component";
 
 type NewActionModalComponentProps = ModalEntity;
 
-const NewActionModalComponent: FC<NewActionModalComponentProps> = ({id, open, positions}): JSX.Element => {
-    const nodeRef = useRef(null);
-    const {deleteModal, setModal} = useModalStore();
+const NewActionModalComponent: FC<NewActionModalComponentProps> = (modal): JSX.Element => {
+    const {setModal} = useModalStore();
 
     return (
         <Fragment>
-            <Draggable
-                handle="strong"
-                nodeRef={nodeRef}
-                onStop={(event, data: DraggableData) => setModal({
-                    id,
-                    open,
-                    positions: {
-                        x: data.x,
-                        y: data.y
-                    }
-                })}
-                position={positions}
-            >
-                <Modal
-                    open={true}
-                    onClose={() => setModal({
-                        id,
-                        open: false,
-                    })}
-                    hideBackdrop={true}
-                    disableEnforceFocus
-                    sx={{
-                        width: 400,
-                        height: 'auto',
-                        top: 0,
-                        left: 0,
-                        bottom: 'auto',
-                        right: 'auto',
-                    }}
-                    ref={nodeRef}
-                >
-                    <Box>
-                        <ModalClose
-                            variant="outlined"
-                            sx={{
-                                top: 'calc(-1/4 * var(--IconButton-size))',
-                                right: 'calc(-1/4 * var(--IconButton-size))',
-                                boxShadow: '0 2px 12px 0 rgba(0 0 0 / 0.2)',
-                                borderRadius: '50%',
-                                bgcolor: 'background.body',
-                            }}
-                        />
-                        <strong className="cursor"><div>Drag here</div></strong>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae delectus doloribus eius error
-                        facilis iusto magni nam officiis quam quibusdam, quo repellat repellendus saepe sed sequi sunt
-                        totam
-                        veritatis! Mollitia.
-                    </Box>
-                </Modal>
-            </Draggable>
+            <ModalComponent modal={modal}>
+                <ModalHeaderComponent>
+                    <Typography
+                        level={'h5'}
+                        sx={{
+                            mr: 'auto',
+                            zIndex: 999,
+                        }}
+                    >
+                        Create new action
+                    </Typography>
+                    <IconButton
+                        variant={'plain'}
+                        color={'neutral'}
+                        sx={{
+                            position: 'relative'
+                        }}
+                        onClick={() => setModal({
+                            id: modal.id,
+                            open: false,
+                        })}
+                    >
+                        <CloseOutlinedIcon/>
+                    </IconButton>
+                </ModalHeaderComponent>
+                <ModalBodyComponent>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores in perspiciatis quod! Cum maxime
+                    molestiae quaerat quod? Aperiam, cum dicta earum fugiat hic necessitatibus nesciunt nihil nobis
+                    sapiente
+                    vero voluptas.
+                </ModalBodyComponent>
+            </ModalComponent>
         </Fragment>
     )
 }

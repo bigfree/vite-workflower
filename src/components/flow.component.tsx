@@ -1,5 +1,5 @@
 import {nanoid} from "nanoid";
-import {CSSProperties, FC, useMemo, useRef} from "react";
+import {CSSProperties, FC, useCallback, useMemo, useRef} from "react";
 import {useDrop, XYCoord} from "react-dnd";
 import {
     Background,
@@ -13,6 +13,7 @@ import {
     XYPosition
 } from "reactflow";
 import useFlowStore, {NodeEntity} from "../store/flow.store";
+import useModalStore from "../store/modal.store";
 import {ItemTypes} from "../types/item.types";
 import CustomEdgeComponent from "./custom/customEdge.component";
 import CustomLineComponent from "./custom/customLine.component";
@@ -39,6 +40,7 @@ const connectionLineStyle: CSSProperties = {
  */
 const FlowComponent: FC = (): JSX.Element => {
     const {getAllEdges, getAllNodes, addSingleNode, onNodesChange, onEdgesChange, onConnect} = useFlowStore();
+    const {setModal} = useModalStore();
 
     const reactFlowWrapper = useRef<HTMLDivElement>(null);
     const {project} = useReactFlow();
@@ -72,6 +74,13 @@ const FlowComponent: FC = (): JSX.Element => {
         },
     }), [project]);
 
+    const handleOnNodeClick = useCallback((event: any, node: NodeEntity) => {
+        setModal({
+            id: node.id,
+            open: true
+        });
+    }, []);
+
     return (
         <div style={{width: '100%', height: '100vh', position: 'relative'}}>
             <div style={{width: '100%', height: '100vh'}} ref={reactFlowWrapper}>
@@ -90,6 +99,7 @@ const FlowComponent: FC = (): JSX.Element => {
                     defaultEdgeOptions={defaultEdgeOptions}
                     connectionLineComponent={CustomLineComponent}
                     connectionLineStyle={connectionLineStyle}
+                    onNodeClick={(event, node) => handleOnNodeClick(event, node)}
                 >
                     <Background
                         gap={20}

@@ -41,6 +41,7 @@ export type FlowStoreState = {
     onConnect: OnConnect;
     getAllNodes: () => NodeEntity[];
     getAllEdges: () => EdgeEntity[];
+    getNode: (nodeId: string) => NodeEntity;
     _hasHydrated: boolean,
     setHasHydrated: (state: boolean) => void;
 }
@@ -90,6 +91,9 @@ const useFlowStore = create<FlowStoreState>()(persist((set, get) => ({
     },
     getAllEdges: () => {
         return Array.from(get().edges.values()) as EdgeEntity[];
+    },
+    getNode: (nodeId: string) => {
+        return get().nodes.get(nodeId) as NodeEntity;
     },
     _hasHydrated: false,
     setHasHydrated: (state: boolean) => {
