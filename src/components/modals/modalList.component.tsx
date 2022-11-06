@@ -8,7 +8,7 @@ const ModalListComponent: FC = (): JSX.Element => {
         <Fragment>
             {getAllModalsArray().map((modal: ModalEntity) => {
                 if (modal.open && ModalType.ACTION_NEW === modal.id) {
-                    return <NewActionModalComponent key={modal.id} id={modal.id}/>
+                    return <NewActionModalComponent key={modal.id} {...modal}/>
                 }
             })}
         </Fragment>

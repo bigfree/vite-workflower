@@ -37,7 +37,10 @@ const useModalStore = create<ModalStoreState>()(persist((set, get) => ({
     _hasHydrated: false,
     setModal: (modal: ModalEntity) => {
         set(produce((draft: ModalStoreState) => {
-            draft.modals.set(modal.id, modal);
+            draft.modals.set(modal.id, {
+                ...modal,
+                positions: modal.positions ? modal.positions : get().modals.get(modal.id)?.positions
+            });
         }))
     },
     deleteModal: (modalId: string | ModalType) => {

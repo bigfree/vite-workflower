@@ -1,20 +1,28 @@
 import {Box, Modal, ModalClose} from "@mui/joy";
-import {FC, Fragment} from "react";
-import Draggable from "react-draggable";
-import useModalStore, {ModalType} from "../../../store/modal.store";
+import {FC, Fragment, useRef} from "react";
+import Draggable, {DraggableData} from "react-draggable";
+import useModalStore, {ModalEntity, ModalType} from "../../../store/modal.store";
 
-type NewActionModalComponentProps = {
-    id: string | ModalType;
-}
+type NewActionModalComponentProps = ModalEntity;
 
-const NewActionModalComponent: FC<NewActionModalComponentProps> = ({id}): JSX.Element => {
+const NewActionModalComponent: FC<NewActionModalComponentProps> = ({id, open, positions}): JSX.Element => {
+    const nodeRef = useRef(null);
     const {deleteModal, setModal} = useModalStore();
 
     return (
         <Fragment>
             <Draggable
                 handle="strong"
-                onDrag={(event, data) => console.log(event, data)}
+                nodeRef={nodeRef}
+                onStop={(event, data: DraggableData) => setModal({
+                    id,
+                    open,
+                    positions: {
+                        x: data.x,
+                        y: data.y
+                    }
+                })}
+                position={positions}
             >
                 <Modal
                     open={true}
@@ -32,6 +40,7 @@ const NewActionModalComponent: FC<NewActionModalComponentProps> = ({id}): JSX.El
                         bottom: 'auto',
                         right: 'auto',
                     }}
+                    ref={nodeRef}
                 >
                     <Box>
                         <ModalClose
