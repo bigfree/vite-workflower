@@ -2,6 +2,7 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import {IconButton, Typography} from "@mui/joy";
 import {FC, Fragment} from "react";
 import useModalStore, {ModalEntity} from "../../../store/modal.store";
+import NewActionComponent from "../../actions/newAction/newAction.component";
 import {ModalBodyComponent, ModalComponent, ModalHeaderComponent} from "../modal.component";
 
 type NewActionModalComponentProps = ModalEntity;
@@ -20,7 +21,7 @@ const NewActionModalComponent: FC<NewActionModalComponentProps> = (modal): JSX.E
                             zIndex: 999,
                         }}
                     >
-                        Create new action
+                        ‍🚀 Create new action
                     </Typography>
                     <IconButton
                         variant={'plain'}
@@ -37,10 +38,7 @@ const NewActionModalComponent: FC<NewActionModalComponentProps> = (modal): JSX.E
                     </IconButton>
                 </ModalHeaderComponent>
                 <ModalBodyComponent>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores in perspiciatis quod! Cum maxime
-                    molestiae quaerat quod? Aperiam, cum dicta earum fugiat hic necessitatibus nesciunt nihil nobis
-                    sapiente
-                    vero voluptas.
+                    <NewActionComponent/>
                 </ModalBodyComponent>
             </ModalComponent>
         </Fragment>

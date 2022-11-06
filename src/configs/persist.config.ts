@@ -41,7 +41,7 @@ export const actionStorePersisConfig: PersistOptions<ActionStoreState> = {
             ...data,
             state: {
                 ...data.state,
-                nodes: Array.from(data.state.actions as Map<string, ActionEntity>),
+                actions: Array.from(data.state.actions as Map<string, ActionEntity>),
             }
         });
     },

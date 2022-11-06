@@ -1,5 +1,5 @@
 import {Box, Modal, Stack} from "@mui/joy";
-import {FC, Fragment, useRef} from "react";
+import {FC, Fragment, MutableRefObject, useRef} from "react";
 import Draggable, {DraggableData} from "react-draggable";
 import useModalStore, {ModalEntity} from "../../store/modal.store";
 
@@ -36,7 +36,13 @@ type ModalBodyComponentProps = {
 export const ModalBodyComponent: FC<ModalBodyComponentProps> = ({children}): JSX.Element => {
     return (
         <Fragment>
-            <Box sx={{padding: 1}}>
+            <Box
+                sx={{
+                    padding: 2,
+                    position: 'relative',
+                    zIndex: 999,
+                }}
+            >
                 {children}
             </Box>
         </Fragment>
@@ -60,7 +66,8 @@ export const ModalHeaderComponent: FC<ModalHeaderComponentProps> = ({children}):
                         borderBottomColor: 'neutral.50',
                         cursor: 'move',
                         alignItems: 'center',
-                        padding: 1,
+                        py: 1,
+                        px: 2,
                     }}
                     className='modalHeader'
                 >
@@ -71,8 +78,14 @@ export const ModalHeaderComponent: FC<ModalHeaderComponentProps> = ({children}):
     )
 }
 
+/**
+ * Modal component
+ * @param modal
+ * @param children
+ * @constructor
+ */
 export const ModalComponent: FC<ModalComponentProps> = ({modal, children}): JSX.Element => {
-    const nodeRef = useRef(null);
+    const nodeRef: MutableRefObject<null> = useRef(null);
     const {setModal} = useModalStore();
 
     return (
@@ -106,7 +119,7 @@ export const ModalComponent: FC<ModalComponentProps> = ({modal, children}): JSX.
                         backgroundColor: 'rgba(255,255,255,0.7)',
                         backdropFilter: 'blur(15px)',
                         border: 2,
-                        borderColor: 'neutral.200'
+                        borderColor: 'neutral.200',
                     }}
                 >
                     <Box
@@ -114,19 +127,12 @@ export const ModalComponent: FC<ModalComponentProps> = ({modal, children}): JSX.
                             display: 'flex',
                             flexFlow: 'column',
                             position: 'relative',
+                            '&:focus-visible': {
+                                outline: 'none'
+                            }
                         }}
                     >
                         {children}
-                        {/*<Box className={'modalHeader'}>*/}
-                        {/*    <ModalHeaderComponent/>*/}
-                        {/*    <Box*/}
-                        {/*        sx={{*/}
-                        {/*            padding: 1*/}
-                        {/*        }}*/}
-                        {/*    >*/}
-                        {/*        {children}*/}
-                        {/*    </Box>*/}
-                        {/*</Box>*/}
                     </Box>
                 </Modal>
             </Draggable>

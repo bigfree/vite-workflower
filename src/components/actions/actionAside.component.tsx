@@ -27,9 +27,9 @@ const ActionAsideComponent: FC = (): JSX.Element => {
                     sx={{
                         display: 'flex',
                         flexFlow: 'column',
-                        // flexGrow: 1,
-                        // flexBasis: 'auto',
-                        // flexShrink: 1
+                        flexGrow: 1,
+                        flexBasis: 'auto',
+                        flexShrink: 1
                     }}
                 >
                     <Stack

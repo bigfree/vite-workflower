@@ -17,16 +17,33 @@ const ActionListComponent: FC = (): JSX.Element => {
                     flexShrink: 1,
                     flexBasis: 'auto',
                     overflow: 'auto',
+                    display: 'flex',
+                    flexFlow: 'column',
                 }}
             >
                 {getAllActions().length ? (
-                    <Stack
-                        direction={'column'}
-                    >
-                        {getAllActions().map((action: ActionEntity) => (
-                            <div key={action.id}>{action.name}</div>
-                        ))}
-                    </Stack>
+                    <Fragment>
+                        <Stack
+                            direction={'column'}
+                            sx={{
+                                flex: '1 1 auto'
+                            }}
+                        >
+                            {getAllActions().map((action: ActionEntity, index: number) => (
+                                <div key={index}>{action.name}</div>
+                            ))}
+                        </Stack>
+                        <Button
+                            variant={'outlined'}
+                            color={'primary'}
+                            onClick={() => setModal({
+                                id: ModalType.ACTION_NEW,
+                                open: true,
+                            })}
+                        >
+                            Add new action
+                        </Button>
+                    </Fragment>
                 ) : (
                     <Alert
                         variant="outlined"
@@ -64,71 +81,6 @@ const ActionListComponent: FC = (): JSX.Element => {
                     </Alert>
                 )}
             </Box>
-            {/*<Modal*/}
-            {/*    open={open}*/}
-            {/*    onClose={() => setOpen(false)}*/}
-            {/*    hideBackdrop={true}*/}
-            {/*    disableEnforceFocus*/}
-            {/*    sx={{*/}
-            {/*        width: 400,*/}
-            {/*        height: 'auto',*/}
-            {/*        bottom: 'auto',*/}
-            {/*        right: 'auto',*/}
-            {/*    }}*/}
-            {/*>*/}
-            {/*    <Box>*/}
-            {/*        <ModalClose*/}
-            {/*            variant="outlined"*/}
-            {/*            sx={{*/}
-            {/*                top: 'calc(-1/4 * var(--IconButton-size))',*/}
-            {/*                right: 'calc(-1/4 * var(--IconButton-size))',*/}
-            {/*                boxShadow: '0 2px 12px 0 rgba(0 0 0 / 0.2)',*/}
-            {/*                borderRadius: '50%',*/}
-            {/*                bgcolor: 'background.body',*/}
-            {/*            }}*/}
-            {/*        />*/}
-            {/*        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae delectus doloribus eius error*/}
-            {/*        facilis iusto magni nam officiis quam quibusdam, quo repellat repellendus saepe sed sequi sunt totam*/}
-            {/*        veritatis! Mollitia.*/}
-            {/*    </Box>*/}
-            {/*</Modal>*/}
-
-            {/*<Draggable*/}
-            {/*    handle="strong"*/}
-            {/*    onDrag={(event, data) => console.log(event, data)}*/}
-            {/*>*/}
-            {/*    <Modal*/}
-            {/*        open={open}*/}
-            {/*        onClose={() => setOpen(false)}*/}
-            {/*        hideBackdrop={true}*/}
-            {/*        disableEnforceFocus*/}
-            {/*        sx={{*/}
-            {/*            width: 400,*/}
-            {/*            height: 'auto',*/}
-            {/*            top: 150,*/}
-            {/*            bottom: 'auto',*/}
-            {/*            right: 'auto',*/}
-            {/*        }}*/}
-            {/*    >*/}
-            {/*        <Box>*/}
-            {/*            <ModalClose*/}
-            {/*                variant="outlined"*/}
-            {/*                sx={{*/}
-            {/*                    top: 'calc(-1/4 * var(--IconButton-size))',*/}
-            {/*                    right: 'calc(-1/4 * var(--IconButton-size))',*/}
-            {/*                    boxShadow: '0 2px 12px 0 rgba(0 0 0 / 0.2)',*/}
-            {/*                    borderRadius: '50%',*/}
-            {/*                    bgcolor: 'background.body',*/}
-            {/*                }}*/}
-            {/*            />*/}
-            {/*            <strong className="cursor"><div>Drag here</div></strong>*/}
-            {/*            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae delectus doloribus eius error*/}
-            {/*            facilis iusto magni nam officiis quam quibusdam, quo repellat repellendus saepe sed sequi sunt*/}
-            {/*            totam*/}
-            {/*            veritatis! Mollitia.*/}
-            {/*        </Box>*/}
-            {/*    </Modal>*/}
-            {/*</Draggable>*/}
         </Fragment>
     )
 }

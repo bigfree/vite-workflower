@@ -1,5 +1,4 @@
 import produce, {enableMapSet} from "immer";
-import {Size} from "re-resizable";
 import create from "zustand";
 import {persist} from "zustand/middleware";
 import {actionStorePersisConfig} from "../configs/persist.config";
@@ -7,33 +6,31 @@ import {actionStorePersisConfig} from "../configs/persist.config";
 enableMapSet();
 
 export enum ActionType {
-    INPUT = 'input',
-    SELECT = 'select',
-    CHECKBOX = 'checkbox',
-    TEXTAREA = 'textarea',
-    MULTISELECT = 'multiselect'
+    INPUT = 'action/input',
+    SELECT = 'action/select',
+    CHECKBOX = 'action/checkbox',
+    TEXTAREA = 'action/textarea',
+    MULTISELECT = 'action/multiselect'
 }
 
 export type ActionEntity = {
     id: string;
-    externalId: string;
-    name: string;
-    color?: string | null;
     type: ActionType;
-    data: [];
+    actionId: string;
+    name: string;
+    description?: string,
+    label?: string;
+    color?: string | null;
+    data?: [];
 }
 
 export type ActionStoreState = {
     actions: Map<string, ActionEntity>;
     openNewActionState: boolean;
-    newActionStateSizes?: Size;
-    listActionStateSizes?: Size;
-    addAction: (action: ActionEntity) => void;
+    setAction: (action: ActionEntity) => void;
     editAction: (action: ActionEntity) => void;
     deleteAction: (actionId: string) => void;
     changeNewActionState: (state: boolean) => void;
-    changeNewActionSizes?: (sizes: Size) => void;
-    changeListActionSizes?: (sizes: Size) => void;
     getAction: (actionId: string) => ActionEntity | undefined;
     getAllActions: () => ActionEntity[];
     _hasHydrated: boolean,
@@ -47,21 +44,21 @@ const useActionStore = create<ActionStoreState>()(persist((set, get) => ({
     actions: new Map([]),
     openNewActionState: false,
     _hasHydrated: false,
-    addAction: (action: ActionEntity) => {
+    setAction: (action: ActionEntity) => {
         set(produce((draft: ActionStoreState) => {
-            draft.actions.set(action.id, action);
+            draft.actions.set(action.actionId, action)
         }))
     },
     editAction: (action: ActionEntity) => {
         set(produce((draft: ActionStoreState) => {
-            draft.actions.set(action.id, action);
+            draft.actions.set(action.actionId, action);
         }))
     },
     deleteAction: (actionId: string) => {
         set(produce((draft: ActionStoreState) => {
             const result: boolean = draft.actions.delete(actionId);
             if (!result) {
-                throw new Error(`Action can't by deleted.`);
+                throw new Error(`Action cant by deleted.`);
             }
         }))
     },
