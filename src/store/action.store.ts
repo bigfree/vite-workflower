@@ -13,6 +13,12 @@ export enum ActionType {
     MULTISELECT = 'action/multiselect'
 }
 
+export type ActionDataEntity = {
+    id: string;
+    name: string;
+    isDefault: boolean;
+}
+
 export type ActionEntity = {
     id: string;
     type: ActionType;
@@ -21,7 +27,7 @@ export type ActionEntity = {
     description?: string,
     label?: string;
     color?: string | null;
-    data?: [];
+    data?: ActionDataEntity[];
 }
 
 export type ActionStoreState = {

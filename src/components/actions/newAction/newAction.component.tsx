@@ -1,8 +1,9 @@
-import {Button, Divider, FormLabel, Input, Option, Select, Stack, TextField} from "@mui/joy";
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import {Box, Button, Divider, FormLabel, IconButton, Input, Option, Select, Stack, Switch, Typography} from "@mui/joy";
 import {FormControl} from "@mui/material";
 import {nanoid} from "nanoid";
 import {ChangeEvent, FC, Fragment, useCallback} from "react";
-import {Controller, SubmitHandler, useForm, useWatch} from "react-hook-form";
+import {Controller, SubmitHandler, useFieldArray, useForm, useWatch} from "react-hook-form";
 import useActionStore, {ActionEntity, ActionType} from "../../../store/action.store";
 
 type ActionTypesSelectValues = {
@@ -10,7 +11,7 @@ type ActionTypesSelectValues = {
     name: string;
 }
 
-type FormInputsType = Omit<ActionEntity, 'id'>
+export type FormInputsType = Omit<ActionEntity, 'id'>
 
 const actionsTypeSelectValues: ActionTypesSelectValues[] = [{
     id: ActionType.INPUT,
@@ -38,9 +39,19 @@ const NewActionComponent: FC = (): JSX.Element => {
             label: '',
             name: '',
             description: '',
-            data: [],
+            data: [{
+                id: '',
+                name: '',
+                isDefault: false,
+            }],
         },
     });
+
+    const {fields, append, remove} = useFieldArray({
+        name: "data",
+        control
+    });
+
     const type = useWatch({
         control,
         name: "type",
@@ -156,15 +167,103 @@ const NewActionComponent: FC = (): JSX.Element => {
                             )}
                         />
                     </FormControl>
-                    {/*{(null !== type) ? (*/}
-                    {/*    <Fragment>*/}
-                    {/*        <Button type={'submit'}>Create</Button>*/}
-                    {/*    </Fragment>*/}
-                    {/*) : ''}*/}
-                    <Button
-                        type={'submit'}
-                    >Create</Button>
+                    {([ActionType.SELECT, ActionType.MULTISELECT].includes(type)) ? (
+                        <Fragment>
+                            <Divider orientation={'horizontal'} sx={{my: 2, mx: -2}}/>
+                            <Stack
+                                direction={'column'}
+                            >
+                                <Stack
+                                    direction={'row'}
+                                    sx={{mb: 1}}
+                                    spacing={2}
+                                >
+                                    <Box sx={{flex: '1'}}>
+                                        <Typography>Data ID</Typography>
+                                    </Box>
+                                    <Box sx={{flex: '1'}}>
+                                        <Typography>Data name</Typography>
+                                    </Box>
+                                    <Box sx={{flex: '0 0 70px'}}>
+                                        <Typography>Default?</Typography>
+                                    </Box>
+                                    <Box sx={{flex: '0 0 40px'}}></Box>
+                                </Stack>
+                                {fields.map((field, index) => (
+                                    <Stack
+                                        direction={'row'}
+                                        key={index}
+                                        sx={{mb: 1}}
+                                        spacing={2}
+                                    >
+                                        <FormControl sx={{flex: '1'}}>
+                                            <Controller
+                                                name={`data.${index}.id`}
+                                                control={control}
+                                                rules={{required: true}}
+                                                render={({field}) => (
+                                                    <Input
+                                                        {...field}
+                                                        autoComplete={'off'}
+                                                        placeholder={'Set data Id'}
+                                                        error={errors?.data?.[index]?.id && true}
+                                                        onChange={(event: ChangeEvent<HTMLInputElement>) => setValue(`data.${index}.id`, event.target.value)}
+                                                    />
+                                                )}
+                                            />
+                                        </FormControl>
+                                        <FormControl sx={{flex: '1'}}>
+                                            <Controller
+                                                name={`data.${index}.name`}
+                                                control={control}
+                                                rules={{required: true}}
+                                                render={({field}) => (
+                                                    <Input
+                                                        {...field}
+                                                        autoComplete={'off'}
+                                                        placeholder={'Set data name'}
+                                                        error={errors?.data?.[index]?.name && true}
+                                                        onChange={(event: ChangeEvent<HTMLInputElement>) => setValue(`data.${index}.name`, event.target.value)}
+                                                    />
+                                                )}
+                                            />
+                                        </FormControl>
+                                        <FormControl sx={{flex: '0 0 70px', justifyContent: 'center'}}>
+                                            <Controller
+                                                name={`data.${index}.isDefault`}
+                                                control={control}
+                                                rules={{required: false}}
+                                                render={({field}) => (
+                                                    <Switch
+                                                        {...field}
+                                                        onChange={(event: ChangeEvent<HTMLInputElement>) => setValue(`data.${index}.isDefault`, event.target.checked)}
+                                                    />
+                                                )}
+                                            />
+                                        </FormControl>
+                                        <IconButton
+                                            variant={'plain'}
+                                            color={'neutral'}
+                                            sx={{flex: '0 0 40px'}}
+                                            onClick={() => remove(index)}
+                                        >
+                                            <DeleteOutlineOutlinedIcon/>
+                                        </IconButton>
+                                    </Stack>
+                                ))}
+                            </Stack>
+                            <Button
+                                variant={'soft'}
+                                color={'neutral'}
+                                onClick={() => append({id: '', name: '', isDefault: false})}
+                            >
+                                Add value
+                            </Button>
+                            <Divider orientation={'horizontal'} sx={{my: 2, mx: -2}}/>
+                        </Fragment>
+                    ) : ''}
                 </Stack>
+                <Button type={'submit'}>Create action</Button>
             </form>
         </Fragment>
     )

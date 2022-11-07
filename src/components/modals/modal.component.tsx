@@ -110,7 +110,7 @@ export const ModalComponent: FC<ModalComponentProps> = ({modal, children}): JSX.
                     hideBackdrop={true}
                     disableEnforceFocus
                     sx={{
-                        width: 500,
+                        width: 600,
                         height: 'auto',
                         top: 0,
                         left: 0,
