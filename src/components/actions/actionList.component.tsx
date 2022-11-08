@@ -1,8 +1,9 @@
 import {Alert, Box, Button, Modal, ModalClose, Stack, Typography} from "@mui/joy";
 import {FC, Fragment, useState} from "react";
 import Draggable from "react-draggable";
-import useActionStore, {ActionEntity} from "../../store/action.store";
+import useActionStore from "../../store/action.store";
 import useModalStore, {ModalType} from "../../store/modal.store";
+import {ActionEntity} from "../../types/action.store";
 
 const ActionListComponent: FC = (): JSX.Element => {
     const {getAllActions} = useActionStore();

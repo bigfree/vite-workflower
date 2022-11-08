@@ -1,8 +1,9 @@
 import {PersistOptions} from "zustand/middleware";
-import {ActionEntity, ActionStoreState} from "../store/action.store";
+import {ActionStoreState} from "../store/action.store";
 import {AppStoreState} from "../store/app.store";
 import {EdgeEntity, FlowStoreState, NodeEntity} from "../store/flow.store";
 import {ModalEntity, ModalStoreState, ModalType} from "../store/modal.store";
+import {ActionEntity} from "../types/action.store";
 
 export const flowStorePersistConfig: PersistOptions<FlowStoreState> = {
     name: 'flowStore',
