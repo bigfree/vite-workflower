@@ -39,3 +39,4 @@
 // }
 //
 // export default connector(TestComponent);
+export {};

@@ -3,7 +3,7 @@ import {FC, Fragment, useState} from "react";
 import Draggable from "react-draggable";
 import useActionStore from "../../store/action.store";
 import useModalStore, {ModalType} from "../../store/modal.store";
-import {ActionEntity} from "../../types/action.store";
+import {ActionEntity} from "../../types/action.types";
 
 const ActionListComponent: FC = (): JSX.Element => {
     const {getAllActions} = useActionStore();
