@@ -4,6 +4,8 @@ import Draggable from "react-draggable";
 import useActionStore from "../../store/action.store";
 import useModalStore, {ModalType} from "../../store/modal.store";
 import {ActionEntity} from "../../types/action.types";
+import ActionListDetailComponent from "./action/actionListDetail.component";
+import SearchActionListDetailComponent from "./action/searchActionListDetail.component";
 
 const ActionListComponent: FC = (): JSX.Element => {
     const {getAllActions} = useActionStore();
@@ -24,6 +26,7 @@ const ActionListComponent: FC = (): JSX.Element => {
             >
                 {getAllActions().length ? (
                     <Fragment>
+                        <SearchActionListDetailComponent/>
                         <Stack
                             direction={'column'}
                             sx={{
@@ -31,7 +34,7 @@ const ActionListComponent: FC = (): JSX.Element => {
                             }}
                         >
                             {getAllActions().map((action: ActionEntity, index: number) => (
-                                <div key={index}>{action.name}</div>
+                                <ActionListDetailComponent key={index} action={action}/>
                             ))}
                         </Stack>
                         <Button

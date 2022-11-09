@@ -12,6 +12,7 @@ export type ActionDataEntity = {
     name: string;
     isDefault: boolean;
 }
+
 export type ActionEntity = {
     id: string;
     type: ActionType;
@@ -22,3 +23,9 @@ export type ActionEntity = {
     color?: string | null;
     data?: ActionDataEntity[];
 }
+export type ActionTypesSelectValues = {
+    id: ActionType;
+    name: string;
+}
+
+export type FormInputsType = Omit<ActionEntity, 'id'>
