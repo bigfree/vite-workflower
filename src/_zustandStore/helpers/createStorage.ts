@@ -12,3 +12,4 @@
 //         await del(name);
 //     },
 // }
+export {};

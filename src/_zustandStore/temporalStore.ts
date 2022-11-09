@@ -14,3 +14,4 @@
 //         decrement: () => set((state) => ({bears: state.bears - 1})),
 //     })),
 // );
+export {};

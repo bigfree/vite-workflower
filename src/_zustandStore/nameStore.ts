@@ -55,3 +55,4 @@
 // );
 //
 // export default createSelectorHooks(useNameStore) as typeof useNameStore & ZustandHookSelectors<NameState>;
+export {};
