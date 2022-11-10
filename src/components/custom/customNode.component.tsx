@@ -1,6 +1,6 @@
 import {CSSProperties, FC, Fragment} from "react";
-import {Handle, NodeProps, Position, useStore} from "reactflow";
-import useAppStore from "../../store/app.store";
+import {Handle, NodeProps, Position, ReactFlowState, useStore} from "reactflow";
+import useAppStore, {AppStoreState} from "../../store/app.store";
 import {NodeData} from "../../store/flow.store";
 
 const targetHandle: CSSProperties = {
@@ -16,7 +16,16 @@ const targetHandle: CSSProperties = {
     opacity: '0',
 }
 
-const connectionNodeIdSelector = (state: { connectionNodeId: any; }) => state.connectionNodeId;
+/**
+ * ConnectionNodeId selector
+ * @param state
+ */
+const connectionNodeIdSelector = (state: ReactFlowState) => state.connectionNodeId;
+/**
+ * EdgeMode selector
+ * @param state
+ */
+const edgeModeSelector = (state: AppStoreState) => state.edgeMode;
 
 /**
  * Custom node
@@ -24,9 +33,9 @@ const connectionNodeIdSelector = (state: { connectionNodeId: any; }) => state.co
  * @constructor
  */
 const CustomNodeComponent: FC<NodeProps<NodeData>> = (node): JSX.Element => {
-    const {edgeMode} = useAppStore();
-    const connectionNodeId = useStore(connectionNodeIdSelector);
-    const isTarget = connectionNodeId && connectionNodeId !== node.id;
+    const edgeMode: boolean = useAppStore(edgeModeSelector);
+    const connectionNodeId: string | null = useStore(connectionNodeIdSelector);
+    const isTarget: boolean = null !== connectionNodeId && node.id !== connectionNodeId;
 
     const targetHandleStyle1 = {zIndex: edgeMode ? 2 : -1};
     const targetHandleStyle2 = {zIndex: edgeMode && isTarget ? 3 : -1};
