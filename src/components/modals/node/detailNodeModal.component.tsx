@@ -1,14 +1,15 @@
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import {IconButton, Typography} from "@mui/joy";
 import {FC, Fragment} from "react";
+import useFlowStore, {FlowStoreState, NodeEntity} from "../../../store/flow.store";
 import useModalStore, {ModalEntity, ModalStoreState, ModalType} from "../../../store/modal.store";
-import FormActionComponent from "../../actions/form/formAction.component";
 import {ModalBodyComponent, ModalComponent, ModalHeaderComponent} from "../modal.component";
+import DataNodeContainerComponent from "./dataNodeContainer.component";
 
 /**
- * NewActionModalComponent Props
+ * NodeModalComponent Props
  */
-type NewActionModalComponentProps = ModalEntity;
+type NodeModalComponentProps = ModalEntity;
 
 /**
  * SetModal Selector
@@ -16,7 +17,13 @@ type NewActionModalComponentProps = ModalEntity;
  */
 const setModalSelector = (state: ModalStoreState) => state.setModal;
 
-const NewActionModalComponent: FC<NewActionModalComponentProps> = (modal): JSX.Element => {
+/**
+ * NodeModal Component
+ * @param modal
+ * @constructor
+ */
+const DetailNodeModalComponent: FC<NodeModalComponentProps> = (modal): JSX.Element => {
+    const node: NodeEntity = useFlowStore((state: FlowStoreState) => state.getNode(modal.id));
     const setModal = useModalStore(setModalSelector);
 
     return (
@@ -30,7 +37,7 @@ const NewActionModalComponent: FC<NewActionModalComponentProps> = (modal): JSX.E
                             zIndex: 999,
                         }}
                     >
-                        ‍🚀 Create new action
+                        {node.id}
                     </Typography>
                     <IconButton
                         variant={'plain'}
@@ -40,7 +47,7 @@ const NewActionModalComponent: FC<NewActionModalComponentProps> = (modal): JSX.E
                         }}
                         onClick={() => setModal({
                             id: modal.id,
-                            type: ModalType.ACTION_NEW,
+                            type: ModalType.NODE_EDIT,
                             open: false,
                         })}
                     >
@@ -48,10 +55,11 @@ const NewActionModalComponent: FC<NewActionModalComponentProps> = (modal): JSX.E
                     </IconButton>
                 </ModalHeaderComponent>
                 <ModalBodyComponent>
-                    <FormActionComponent/>
+                    <DataNodeContainerComponent/>
+                    {JSON.stringify(node)}
                 </ModalBodyComponent>
             </ModalComponent>
         </Fragment>
-    )
+    );
 }
-export default NewActionModalComponent;
+export default DetailNodeModalComponent;

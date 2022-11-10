@@ -42,6 +42,7 @@ const ActionListComponent: FC = (): JSX.Element => {
                             color={'primary'}
                             onClick={() => setModal({
                                 id: ModalType.ACTION_NEW,
+                                type: ModalType.ACTION_NEW,
                                 open: true,
                             })}
                         >
@@ -77,6 +78,7 @@ const ActionListComponent: FC = (): JSX.Element => {
                             variant={'plain'}
                             onClick={() => setModal({
                                 id: ModalType.ACTION_NEW,
+                                type: ModalType.ACTION_NEW,
                                 open: true,
                             })}
                         >

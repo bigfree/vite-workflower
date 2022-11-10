@@ -2,10 +2,10 @@ import {Box} from "@mui/joy";
 import {FC} from "react";
 
 /**
- * Additional tab component
+ * ActionAdditionalTab component
  * @constructor
  */
-const NewActionAdditionalTabComponent: FC = (): JSX.Element => {
+const FormActionAdditionalTabComponent: FC = (): JSX.Element => {
     return (
         <Box sx={{mb: 2}}>
             Additional data tab
@@ -13,4 +13,4 @@ const NewActionAdditionalTabComponent: FC = (): JSX.Element => {
     );
 }
 
-export default NewActionAdditionalTabComponent;
+export default FormActionAdditionalTabComponent;

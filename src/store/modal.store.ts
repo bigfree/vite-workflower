@@ -2,13 +2,14 @@ import {enableMapSet, produce} from "immer";
 import create from "zustand";
 import {persist} from "zustand/middleware";
 import {modalStorePersisConfig} from "../configs/persist.config";
-import {FlowStoreState} from "./flow.store";
 
 enableMapSet();
 
 export enum ModalType {
     ACTION_NEW = 'action/new',
     ACTION_EDIT = 'action/edit',
+    NODE_NEW = 'node/new',
+    NODE_EDIT = 'node/edit',
 }
 
 type ModalEntityPositions = {
@@ -18,6 +19,7 @@ type ModalEntityPositions = {
 
 export type ModalEntity = {
     id: string;
+    type: ModalType,
     open: boolean;
     positions?: ModalEntityPositions
 }

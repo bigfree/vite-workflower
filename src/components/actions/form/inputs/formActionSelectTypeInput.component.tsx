@@ -2,7 +2,7 @@ import {FormLabel, Option, Select} from "@mui/joy";
 import {FormControl} from "@mui/material";
 import {FC, Fragment} from "react";
 import {Controller, useFormContext, UseFormReturn} from "react-hook-form";
-import {ActionType, ActionTypesSelectValues, FormInputsType} from "../../../types/action.types";
+import {ActionType, ActionTypesSelectValues, FormInputsType} from "../../../../types/action.types";
 
 const actionsTypeSelectValues: ActionTypesSelectValues[] = [{
     id: ActionType.INPUT,
@@ -28,7 +28,7 @@ const actionsTypeSelectValues: ActionTypesSelectValues[] = [{
  * Action select type component
  * @constructor
  */
-const NewActionSelectTypeInputComponent: FC = (): JSX.Element => {
+const FormActionSelectTypeInputComponent: FC = (): JSX.Element => {
     const {control, setValue}: UseFormReturn<FormInputsType> = useFormContext<FormInputsType>();
 
     return (
@@ -68,4 +68,4 @@ const NewActionSelectTypeInputComponent: FC = (): JSX.Element => {
     );
 }
 
-export default NewActionSelectTypeInputComponent;
+export default FormActionSelectTypeInputComponent;

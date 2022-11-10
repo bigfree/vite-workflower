@@ -1,15 +1,11 @@
-import AccountTreeOutlinedIcon from '@mui/icons-material/AccountTreeOutlined';
-import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
-import DnsOutlinedIcon from '@mui/icons-material/DnsOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import FormatListNumberedOutlinedIcon from '@mui/icons-material/FormatListNumberedOutlined';
-import InputOutlinedIcon from '@mui/icons-material/InputOutlined';
-import WysiwygOutlinedIcon from '@mui/icons-material/WysiwygOutlined';
 import {Box, Card, CardContent, IconButton, Typography} from "@mui/joy";
 import {FC} from "react";
 import {useDrag} from "react-dnd";
-import {ActionEntity, ActionType} from "../../../types/action.types";
+import useModalStore, {ModalStoreState, ModalType} from "../../../store/modal.store";
+import {ActionEntity} from "../../../types/action.types";
 import {DropResult, ItemTypes} from "../../../types/item.types";
+import ActionIconByTypeComponent from "../../shared/actionIconByType.component";
 
 type ActionListDetailProps = {
     action: ActionEntity;
@@ -20,6 +16,7 @@ type ActionListDetailProps = {
  * @constructor
  */
 const ActionListDetailComponent: FC<ActionListDetailProps> = ({action}): JSX.Element => {
+    const setModal = useModalStore((store: ModalStoreState) => store.setModal);
     const [{isDragging}, drag] = useDrag<ActionEntity, DropResult, { isDragging: boolean }>(() => ({
         type: ItemTypes.ACTION,
         item: action,
@@ -58,10 +55,10 @@ const ActionListDetailComponent: FC<ActionListDetailProps> = ({action}): JSX.Ele
             mb: 2,
             p: 1,
             borderRadius: 4,
-            borderColor: 'neutral.100',
-            boxShadow: 'none',
+            borderColor: isDragging ? 'blue.50' : 'neutral.100',
+            boxShadow: isDragging ? '2px 2px 0 0 rgba(29, 143, 237, .06)' : 'none',
             '&:hover': {
-                boxShadow: '2px 2px 0 0 rgba(0, 0, 0, .06)',
+                boxShadow: isDragging ? '2px 2px 0 0 rgba(29, 143, 237, .1)' : '2px 2px 0 0 rgba(0, 0, 0, .06)',
             }
         }}>
             <Box
@@ -70,18 +67,13 @@ const ActionListDetailComponent: FC<ActionListDetailProps> = ({action}): JSX.Ele
                     ml: -1,
                     px: 2,
                     borderRight: 1,
-                    borderRightColor: 'neutral.50',
+                    borderRightColor: isDragging ? 'blue.50' : 'neutral.50',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                 }}
             >
-                {ActionType.INPUT === action.type ? <InputOutlinedIcon/> : ''}
-                {ActionType.SELECT === action.type ? <FormatListNumberedOutlinedIcon/> : ''}
-                {ActionType.TEXTAREA === action.type ? <WysiwygOutlinedIcon/> : ''}
-                {ActionType.CHECKBOX === action.type ? <CheckBoxOutlinedIcon/> : ''}
-                {ActionType.MULTISELECT === action.type ? <DnsOutlinedIcon/> : ''}
-                {ActionType.NESTED_WORKFLOW === action.type ? <AccountTreeOutlinedIcon/> : ''}
+                <ActionIconByTypeComponent type={action?.type}/>
             </Box>
             <CardContent
                 sx={{
@@ -106,9 +98,14 @@ const ActionListDetailComponent: FC<ActionListDetailProps> = ({action}): JSX.Ele
                     mr: -1,
                     px: 2,
                     borderLeft: 1,
-                    borderLeftColor: 'neutral.100',
+                    borderLeftColor: isDragging ? 'blue.50' : 'neutral.100',
                     borderRadius: 0
                 }}
+                onClick={() => setModal({
+                    id: action.actionId,
+                    type: ModalType.ACTION_EDIT,
+                    open: true,
+                })}
             >
                 <EditOutlinedIcon/>
             </IconButton>

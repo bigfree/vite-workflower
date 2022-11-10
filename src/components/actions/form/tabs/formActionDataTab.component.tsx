@@ -3,13 +3,13 @@ import {Box, Button, IconButton, Input, Stack, Switch, Typography} from "@mui/jo
 import {FormControl} from "@mui/material";
 import {ChangeEvent, FC} from "react";
 import {Controller, useFieldArray, useFormContext, UseFormReturn} from "react-hook-form";
-import {FormInputsType} from "../../../types/action.types";
+import {FormInputsType} from "../../../../types/action.types";
 
 /**
- * Data tab component
+ * ActionDataTab component
  * @constructor
  */
-const NewActionDataTabComponent: FC = (): JSX.Element => {
+const FormActionDataTabComponent: FC = (): JSX.Element => {
     const {control, setValue, formState: {errors}}: UseFormReturn<FormInputsType> = useFormContext<FormInputsType>();
 
     const {fields, append, remove} = useFieldArray<FormInputsType>({
@@ -118,4 +118,4 @@ const NewActionDataTabComponent: FC = (): JSX.Element => {
     );
 }
 
-export default NewActionDataTabComponent;
+export default FormActionDataTabComponent;

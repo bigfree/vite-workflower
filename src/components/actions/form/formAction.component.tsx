@@ -1,34 +1,61 @@
 import {Alert, Box, Button, Tab, tabClasses, TabList, TabPanel, Tabs, Typography} from "@mui/joy";
-import {Snackbar} from "@mui/material";
 import {nanoid} from "nanoid";
 import {FC, Fragment, useCallback} from "react";
 import {FormProvider, SubmitHandler, useForm, useWatch} from "react-hook-form";
-import useActionStore from "../../../store/action.store";
+import useActionStore, {ActionStoreState} from "../../../store/action.store";
 import {ActionEntity, ActionType, FormInputsType} from "../../../types/action.types";
-import NewActionAdditionalTabComponent from "./newActionAdditionalTab.component";
-import NewActionBasicTabComponent from "./newActionBasicTab.component";
-import NewActionDataTabComponent from "./newActionDataTab.component";
-import NewActionSelectTypeInputComponent from "./newActionSelectTypeInput.component";
+import FormActionAdditionalTabComponent from "./tabs/formActionAdditionalTab.component";
+import FormActionBasicTabComponent from "./tabs/formActionBasicTab.component";
+import FormActionDataTabComponent from "./tabs/formActionDataTab.component";
+import FormActionSelectTypeInputComponent from "./inputs/formActionSelectTypeInput.component";
 
 /**
- * New action component
+ * NewActionComponent Props type
+ */
+type NewActionComponentProps = {
+    action?: ActionEntity,
+}
+
+/**
+ * SetAction Selector
+ * @param state
  * @constructor
  */
-const NewActionComponent: FC = (): JSX.Element => {
-    const {setAction, getAction} = useActionStore();
+const setActionSelector = (state: ActionStoreState) => state.setAction;
+/**
+ * GetAction Selector
+ * @param state
+ * @constructor
+ */
+const getActionSelector = (state: ActionStoreState) => state.getAction;
+
+/**
+ * DefaultForm values
+ */
+const defaultFormValues: ActionEntity = {
+    id: '',
+    type: ActionType.INPUT,
+    actionId: '',
+    label: '',
+    name: '',
+    description: '',
+    data: [{
+        id: '',
+        name: '',
+        isDefault: false,
+    }],
+};
+
+/**
+ * NewAction component
+ * @constructor
+ */
+const FormActionComponent: FC<NewActionComponentProps> = ({action}): JSX.Element => {
+    const setAction = useActionStore(setActionSelector);
+    const getAction = useActionStore(getActionSelector);
+
     const methods = useForm<FormInputsType>({
-        defaultValues: {
-            type: ActionType.INPUT,
-            actionId: '',
-            label: '',
-            name: '',
-            description: '',
-            data: [{
-                id: '',
-                name: '',
-                isDefault: false,
-            }],
-        },
+        defaultValues: action ?? defaultFormValues,
     });
 
     const type = useWatch({
@@ -37,23 +64,28 @@ const NewActionComponent: FC = (): JSX.Element => {
     });
 
     const onSubmit: SubmitHandler<FormInputsType> = useCallback((data) => {
-        const storeAction: ActionEntity | undefined = getAction(data.actionId);
-        console.log(data);
-        if (!storeAction) {
+        if (action) {
             setAction({
-                id: nanoid(),
+                id: action.id,
                 ...data
             });
         } else {
-            console.log('Action exist!')
+            if (!getAction(data.actionId)) {
+                setAction({
+                    id: nanoid(),
+                    ...data
+                });
+            } else {
+                console.log('Action exist!')
+            }
         }
-    }, []);
+    }, [setAction, getAction, action]);
 
     return (
         <Fragment>
             <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit(onSubmit)}>
-                    <NewActionSelectTypeInputComponent/>
+                    <FormActionSelectTypeInputComponent/>
                     <Tabs defaultValue={0} sx={{'--Tabs-gap': '0px'}}>
                         <TabList
                             variant={'outlined'}
@@ -69,6 +101,7 @@ const NewActionComponent: FC = (): JSX.Element => {
                                 borderTopColor: 'neutral.100',
                                 p: 0,
                                 display: 'flex',
+                                backgroundColor: 'white',
                                 [`& .${tabClasses.root}`]: {
                                     borderRadius: 0,
                                     boxShadow: 'none',
@@ -105,11 +138,11 @@ const NewActionComponent: FC = (): JSX.Element => {
                             <Tab>Additional</Tab>
                         </TabList>
                         <TabPanel value={0}>
-                            <NewActionBasicTabComponent/>
+                            <FormActionBasicTabComponent/>
                         </TabPanel>
                         <TabPanel value={1}>
                             {([ActionType.SELECT, ActionType.MULTISELECT].includes(type)) ? (
-                                <NewActionDataTabComponent/>
+                                <FormActionDataTabComponent/>
                             ) : (
                                 <Alert color={'neutral'} variant={'outlined'}
                                        sx={{mb: 2, justifyContent: 'center', borderColor: 'neutral.100'}}>
@@ -120,7 +153,7 @@ const NewActionComponent: FC = (): JSX.Element => {
                             )}
                         </TabPanel>
                         <TabPanel value={2}>
-                            <NewActionAdditionalTabComponent/>
+                            <FormActionAdditionalTabComponent/>
                         </TabPanel>
                     </Tabs>
                     <Box
@@ -132,11 +165,11 @@ const NewActionComponent: FC = (): JSX.Element => {
                             borderTopColor: 'neutral.100'
                         }}
                     >
-                        <Button type={'submit'}>Create action</Button>
+                        <Button type={'submit'}>{action ? 'Save action' : 'Create action'}</Button>
                     </Box>
                 </form>
             </FormProvider>
         </Fragment>
     );
 }
-export default NewActionComponent;
+export default FormActionComponent;

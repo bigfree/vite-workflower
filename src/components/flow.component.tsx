@@ -13,7 +13,7 @@ import {
     XYPosition
 } from "reactflow";
 import useFlowStore, {NodeEntity} from "../store/flow.store";
-import useModalStore from "../store/modal.store";
+import useModalStore, {ModalType} from "../store/modal.store";
 import {ItemTypes} from "../types/item.types";
 import CustomEdgeComponent from "./custom/customEdge.component";
 import CustomLineComponent from "./custom/customLine.component";
@@ -77,6 +77,7 @@ const FlowComponent: FC = (): JSX.Element => {
     const handleOnNodeClick = useCallback((event: any, node: NodeEntity) => {
         setModal({
             id: node.id,
+            type: ModalType.NODE_EDIT,
             open: true
         });
     }, []);

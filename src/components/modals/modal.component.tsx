@@ -1,32 +1,32 @@
 import {Box, Modal, Stack} from "@mui/joy";
-import {FC, Fragment, MutableRefObject, useRef} from "react";
-import Draggable, {DraggableData} from "react-draggable";
-import useModalStore, {ModalEntity} from "../../store/modal.store";
+import {FC, Fragment, MutableRefObject, useCallback, useRef} from "react";
+import Draggable, {DraggableData, DraggableEvent} from "react-draggable";
+import useModalStore, {ModalEntity, ModalStoreState} from "../../store/modal.store";
+
+type ModalChildren =
+    | JSX.Element
+    | JSX.Element[]
+    | string
+    | string[]
 
 type ModalComponentProps = {
     modal: ModalEntity;
-    children:
-        | JSX.Element
-        | JSX.Element[]
-        | string
-        | string[];
+    children: ModalChildren
 }
 
 type ModalHeaderComponentProps = {
-    children:
-        | JSX.Element
-        | JSX.Element[]
-        | string
-        | string[];
+    children: ModalChildren
 }
 
 type ModalBodyComponentProps = {
-    children:
-        | JSX.Element
-        | JSX.Element[]
-        | string
-        | string[];
+    children: ModalChildren
 }
+
+/**
+ * SetModal Selector
+ * @param store
+ */
+const setModalSelector = (store: ModalStoreState) => store.setModal;
 
 /**
  * Modal Body component
@@ -86,7 +86,18 @@ export const ModalHeaderComponent: FC<ModalHeaderComponentProps> = ({children}):
  */
 export const ModalComponent: FC<ModalComponentProps> = ({modal, children}): JSX.Element => {
     const nodeRef: MutableRefObject<null> = useRef(null);
-    const {setModal} = useModalStore();
+    const setModal = useModalStore(setModalSelector);
+
+    /** Draggable onStop event */
+    const handleOnStop = useCallback((event: DraggableEvent, data: DraggableData) => {
+        setModal({
+            ...modal,
+            positions: {
+                x: data.x,
+                y: data.y
+            }
+        })
+    }, [modal]);
 
     return (
         <Fragment>
@@ -94,14 +105,7 @@ export const ModalComponent: FC<ModalComponentProps> = ({modal, children}): JSX.
                 handle={'.modalHeader'}
                 bounds={'body'}
                 nodeRef={nodeRef}
-                onStop={(event, data: DraggableData) => setModal({
-                    id: modal.id,
-                    open: modal.open,
-                    positions: {
-                        x: data.x,
-                        y: data.y
-                    }
-                })}
+                onStop={handleOnStop}
                 position={modal.positions}
             >
                 <Modal

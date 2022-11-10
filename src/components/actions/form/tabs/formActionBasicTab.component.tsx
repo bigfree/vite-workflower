@@ -4,10 +4,10 @@ import {ChangeEvent, FC} from "react";
 import {Controller, useFormContext} from "react-hook-form";
 
 /**
- * Basic tab component
+ * ActionBasicTab component
  * @constructor
  */
-const NewActionBasicTabComponent: FC = (): JSX.Element => {
+const FormActionBasicTabComponent: FC = (): JSX.Element => {
     const {control, setValue, formState: {errors}} = useFormContext();
 
     return (
@@ -82,4 +82,4 @@ const NewActionBasicTabComponent: FC = (): JSX.Element => {
     )
 }
 
-export default NewActionBasicTabComponent;
+export default FormActionBasicTabComponent;
