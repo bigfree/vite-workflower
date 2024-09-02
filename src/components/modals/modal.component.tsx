@@ -1,6 +1,7 @@
 import {Box, Modal, Stack} from "@mui/joy";
-import {FC, Fragment, MutableRefObject, useCallback, useRef} from "react";
+import {FC, Fragment, MutableRefObject, SyntheticEvent, useCallback, useRef} from "react";
 import Draggable, {DraggableData, DraggableEvent} from "react-draggable";
+import {ResizableBox, ResizeCallbackData} from 'react-resizable';
 import useModalStore, {ModalEntity, ModalStoreState} from "../../store/modal.store";
 
 type ModalChildren =
@@ -78,6 +79,10 @@ export const ModalHeaderComponent: FC<ModalHeaderComponentProps> = ({children}):
     )
 }
 
+// const MyHandle: FC = (props): JSX.Element => {
+//     return <div ref={props.innerRef} className="foo" {...props} />;
+// };
+
 /**
  * Modal component
  * @param modal
@@ -99,6 +104,10 @@ export const ModalComponent: FC<ModalComponentProps> = ({modal, children}): JSX.
         })
     }, [modal]);
 
+    const handleOnResize = useCallback((event: SyntheticEvent, data: ResizeCallbackData) => {
+        console.log(data);
+    }, []);
+
     return (
         <Fragment>
             <Draggable
@@ -107,38 +116,52 @@ export const ModalComponent: FC<ModalComponentProps> = ({modal, children}): JSX.
                 nodeRef={nodeRef}
                 onStop={handleOnStop}
                 position={modal.positions}
+                cancel={".react-resizable-handle"}
             >
-                <Modal
+                <ResizableBox
+                    width={600}
+                    height={200}
+                    onResize={handleOnResize}
                     ref={nodeRef}
-                    open={true}
-                    hideBackdrop={true}
-                    disableEnforceFocus
-                    sx={{
-                        width: 600,
-                        height: 'auto',
-                        top: 0,
-                        left: 0,
-                        bottom: 'auto',
-                        right: 'auto',
-                        backgroundColor: 'rgba(255,255,255,0.7)',
-                        backdropFilter: 'blur(15px)',
-                        border: 2,
-                        borderColor: 'neutral.200',
-                    }}
+                    resizeHandles={["s", "w", "e", "n", "sw", "nw", "se", "ne"]}
+                    // handle={(resizeHandle, ref) => <div style={{
+                    //     width: '50px',
+                    //     height: '50px',
+                    //     backgroundColor: 'red',
+                    // }} ref={ref}>{resizeHandle}</div>}
                 >
-                    <Box
+                    <Modal
+                        // ref={nodeRef}
+                        open={true}
+                        hideBackdrop={true}
+                        disableEnforceFocus
                         sx={{
-                            display: 'flex',
-                            flexFlow: 'column',
-                            position: 'relative',
-                            '&:focus-visible': {
-                                outline: 'none'
-                            }
+                            width: 600,
+                            height: 'auto',
+                            top: 0,
+                            left: 0,
+                            bottom: 'auto',
+                            right: 'auto',
+                            backgroundColor: 'rgba(255,255,255,0.7)',
+                            backdropFilter: 'blur(15px)',
+                            border: 2,
+                            borderColor: 'neutral.200',
                         }}
                     >
-                        {children}
-                    </Box>
-                </Modal>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexFlow: 'column',
+                                position: 'relative',
+                                '&:focus-visible': {
+                                    outline: 'none'
+                                }
+                            }}
+                        >
+                            {children}
+                        </Box>
+                    </Modal>
+                </ResizableBox>
             </Draggable>
         </Fragment>
     )

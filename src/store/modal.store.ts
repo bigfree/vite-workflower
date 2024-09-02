@@ -17,11 +17,17 @@ type ModalEntityPositions = {
     y: number;
 }
 
+type ModalEntitySizes = {
+    width: number;
+    height: number;
+}
+
 export type ModalEntity = {
     id: string;
-    type: ModalType,
+    type: ModalType;
     open: boolean;
-    positions?: ModalEntityPositions
+    positions?: ModalEntityPositions;
+    sizes?: ModalEntitySizes;
 }
 
 export type ModalStoreState = {
